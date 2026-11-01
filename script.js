@@ -1033,5 +1033,3 @@ async function restaurarSessaoAdministrativa() {
 }
 
 restaurarSessaoAdministrativa();
-
-
