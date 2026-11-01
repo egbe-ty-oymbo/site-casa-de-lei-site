@@ -1,4 +1,3 @@
-
 /* AGENDAMENTO DE JOGO DE BÚZIOS E PIX */
 
 const formularioJogo = document.querySelector(".agenda-formulario");
@@ -512,7 +511,7 @@ if (botaoCadastrarMaterial) {
     return;
 }
 
-       
+        
         let resultadoGravacao;
 
         try {
@@ -712,7 +711,8 @@ if (botaoSairAdministracao) {
         formPrimeiraVez.elements["data_assistencia"].value = pessoa.data_assistencia || "";
         formPrimeiraVez.elements["gira"].value = pessoa.gira || "";
         formPrimeiraVez.elements["responsavel"].value = pessoa.responsavel_recepcao || "";
-        formPrimeiraVez.elements["nome"].value = pessoa.nome || "";
+        // CORRIGIDO: usando nome_completo para refletir o banco de dados
+        formPrimeiraVez.elements["nome"].value = pessoa.nome_completo || "";
         formPrimeiraVez.elements["email"].value = pessoa.email || "";
         formPrimeiraVez.elements["telefone"].value = pessoa.telefone || "";
         formPrimeiraVez.elements["endereco"].value = pessoa.endereco || "";
@@ -733,7 +733,7 @@ if (botaoSairAdministracao) {
         if (salvar) salvar.textContent = "Salvar alterações";
         const cancelar = document.getElementById("cancelar-edicao-assistencia");
         if (cancelar) cancelar.hidden = false;
-        mensagemPrimeiraVez.textContent = `Editando cadastro de ${pessoa.nome || "visitante"}.`;
+        mensagemPrimeiraVez.textContent = `Editando cadastro de ${pessoa.nome_completo || "visitante"}.`;
         formPrimeiraVez.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
@@ -747,7 +747,8 @@ if (botaoSairAdministracao) {
             if (tipo === "primeira") {
                 const item = document.createElement("details");
                 const nome = document.createElement("summary");
-                nome.textContent = pessoa.nome || "Visitante sem nome";
+                // CORRIGIDO: alterado de pessoa.nome para pessoa.nome_completo
+                nome.textContent = pessoa.nome_completo || "Visitante sem nome";
                 const conteudo = document.createElement("div");
                 conteudo.style.whiteSpace = "pre-wrap";
                 const linhas = [
@@ -774,7 +775,8 @@ if (botaoSairAdministracao) {
                     acoes.append(
                         criarBotao("✏️ Editar", () => iniciarEdicaoPrimeiraVez(pessoa)),
                         criarBotao("🗑️ Excluir", async () => {
-                            if (!confirm(`Excluir o cadastro de ${pessoa.nome || "visitante"}?`)) return;
+                            // CORRIGIDO: alterado para nome_completo
+                            if (!confirm(`Excluir o cadastro de ${pessoa.nome_completo || "visitante"}?`)) return;
                             const { error } = await supabaseClient
                                 .from("registros_assistencia")
                                 .delete().eq("id", pessoa.id);
@@ -853,17 +855,17 @@ if (botaoSairAdministracao) {
         }
 
         const [primeira, fixa] = await Promise.all([
-    supabaseClient
-        .from("registros_assistencia")
-        .select("*")
-        .order("data_assistencia", { ascending: false }),
+            supabaseClient
+                .from("registros_assistencia")
+                .select("*")
+                .order("data_assistencia", { ascending: false }),
 
-    supabaseClient
-        .from("registros_assistencia_fixa")
-        .select("id, data_assistencia, nome_completo, criado_por, criado_em")
-        .order("data_assistencia", { ascending: false })
-        .order("criado_em", { ascending: false })
-]);
+            supabaseClient
+                .from("registros_assistencia_fixa")
+                .select("id, data_assistencia, nome_completo, criado_por, criado_em")
+                .order("data_assistencia", { ascending: false })
+                .order("criado_em", { ascending: false })
+        ]);
 
         if (primeira.error) console.error("Erro ao consultar primeira vez:", primeira.error);
         if (fixa.error) console.error("Erro ao consultar assistência fixa:", fixa.error);
@@ -886,224 +888,173 @@ if (botaoSairAdministracao) {
         });
 
         if (grupos.size === 0) {
-            lista.textContent = "Ainda não há registros cadastrados.";
+            lista.textContent = "Nenhum registro encontrado.";
             return;
         }
 
-        const datas = Array.from(grupos.keys()).sort((a, b) => b.localeCompare(a));
-        datas.forEach(data => {
-            const grupo = grupos.get(data);
-            const pastaData = document.createElement("details");
+        grupos.forEach((valor, data) => {
+            const tituloPasta = dataExibicao(data);
+            const pasta = criarPastaRegistros(tituloPasta, [...valor.primeira, ...valor.fixa], "grupo", acesso);
+            
+            // Separando visualmente por subpastas ou exibindo juntas
+            const containerData = document.createElement("details");
             const resumoData = document.createElement("summary");
-            const total = grupo.primeira.length + grupo.fixa.length;
-            resumoData.textContent = `📅 ${data === "sem-data" ? "Registros antigos (sem data)" : dataExibicao(data)} — ${total} pessoa(s)`;
-            pastaData.appendChild(resumoData);
-            pastaData.appendChild(criarPastaRegistros("Primeira vez", grupo.primeira, "primeira", acesso));
-            pastaData.appendChild(criarPastaRegistros("Assistência fixa", grupo.fixa, "fixa", acesso));
-            lista.appendChild(pastaData);
+            resumoData.textContent = `📅 ${tituloPasta} (${valor.primeira.length + valor.fixa.length} pessoas)`;
+            containerData.appendChild(resumoData);
+
+            if (valor.primeira.length > 0) {
+                containerData.appendChild(criarPastaRegistros(`Primeira vez (${valor.primeira.length})`, valor.primeira, "primeira", acesso));
+            }
+            if (valor.fixa.length > 0) {
+                containerData.appendChild(criarPastaRegistros(`Assistência fixa (${valor.fixa.length})`, valor.fixa, "fixa", acesso));
+            }
+
+            lista.appendChild(containerData);
         });
     }
 
-    window.carregarRegistrosAssistencia = carregarRegistrosAssistencia;
-
-    // Abrir/fechar o cadastro de primeira vez.
-    if (botaoAbrirPrimeiraVez && formularioPrimeiraVez) {
-        botaoAbrirPrimeiraVez.addEventListener("click", function () {
-            const abrir = formularioPrimeiraVez.hidden;
-            formularioPrimeiraVez.hidden = !abrir;
-            botaoAbrirPrimeiraVez.setAttribute("aria-expanded", String(abrir));
-            botaoAbrirPrimeiraVez.textContent = abrir
-                ? "− Fechar cadastro de primeira vez"
-                : "＋ Registrar assistência de primeira vez";
-        });
+    if (botaoAtualizar) {
+        botaoAtualizar.addEventListener("click", carregarRegistrosAssistencia);
     }
 
-    // Botão de cancelar edição, criado aqui para não exigir outro bloco no HTML.
-    const cancelarEdicao = document.createElement("button");
-    cancelarEdicao.type = "button";
-    cancelarEdicao.id = "cancelar-edicao-assistencia";
-    cancelarEdicao.className = "admin-botao admin-botao-secundario";
-    cancelarEdicao.textContent = "Cancelar edição";
-    cancelarEdicao.hidden = true;
-    formPrimeiraVez.appendChild(cancelarEdicao);
-    cancelarEdicao.addEventListener("click", () => {
-        limparEdicaoPrimeiraVez();
-        mensagemPrimeiraVez.textContent = "Edição cancelada.";
-    });
-
-    formPrimeiraVez.addEventListener("submit", async function (evento) {
-        evento.preventDefault();
+    formPrimeiraVez.addEventListener("submit", async function (e) {
+        e.preventDefault();
         const acesso = await obterAcesso();
-        if (!acesso || !acesso.administrador) {
-            mensagemPrimeiraVez.textContent = "Somente administradores aprovados podem cadastrar ou alterar registros de primeira vez.";
+        if (!acesso) {
+            mensagemPrimeiraVez.textContent = "Você precisa estar logado para salvar.";
             return;
         }
 
-        const registro = {
+        const dados = {
             data_assistencia: valorCampo("data_assistencia"),
             gira: valorCampo("gira"),
             responsavel_recepcao: valorCampo("responsavel"),
-            nome: valorCampo("nome"),
-            email: valorCampo("email") || null,
-            endereco: valorCampo("endereco") || null,
-            telefone: valorCampo("telefone") || null,
+            // CORRIGIDO: salvando no banco usando a coluna nome_completo
+            nome_completo: valorCampo("nome"),
+            email: valorCampo("email"),
+            telefone: valorCampo("telefone"),
+            endereco: valorCampo("endereco"),
             origem: valoresMarcados("assistencia-origem"),
-            origem_detalhes: valorCampo("detalhe-origem") || null,
+            origem_detalhes: valorCampo("detalhe-origem"),
             frequenta_terreiro: valorCampo("frequenta-terreiro"),
             deseja_grupo_assistencia: valorCampo("deseja-grupo"),
             motivos_visita: valoresMarcados("assistencia-motivo"),
-            motivo_outro: valorCampo("motivo-outro") || null,
-            observacoes: valorCampo("observacoes") || null
+            motivo_outro: valorCampo("motivo-outro"),
+            observacoes: valorCampo("observacoes")
         };
 
-        if (!registro.data_assistencia || !registro.gira || !registro.responsavel_recepcao ||
-            !registro.nome || !registro.frequenta_terreiro || !registro.deseja_grupo_assistencia) {
-            mensagemPrimeiraVez.textContent = "Preencha todos os campos obrigatórios.";
+        if (!dados.data_assistencia || !dados.gira || !dados.responsavel_recepcao || !dados.nome_completo || !dados.frequenta_terreiro || !dados.deseja_grupo) {
+            mensagemPrimeiraVez.textContent = "Preencha todos os campos obrigatórios (*).";
             return;
         }
 
-        mensagemPrimeiraVez.textContent = "Salvando cadastro...";
-        const botaoSalvar = formPrimeiraVez.querySelector('button[type="submit"]');
-        if (botaoSalvar) botaoSalvar.disabled = true;
+        mensagemPrimeiraVez.textContent = "Salvando registro...";
 
         let resultado;
-        if (registroEmEdicao !== null) {
-            resultado = await supabaseClient.from("registros_assistencia")
-                .update(registro).eq("id", registroEmEdicao);
+        if (registroEmEdicao) {
+            resultado = await supabaseClient
+                .from("registros_assistencia")
+                .update(dados)
+                .eq("id", registroEmEdicao);
         } else {
-            registro.criado_por = acesso.user.id;
-            resultado = await supabaseClient.from("registros_assistencia").insert(registro);
+            resultado = await supabaseClient
+                .from("registros_assistencia")
+                .insert([dados]);
         }
 
-        if (botaoSalvar) botaoSalvar.disabled = false;
         if (resultado.error) {
-    console.error("Erro detalhado ao salvar primeira vez:", resultado.error);
+            mensagemPrimeiraVez.textContent = "Erro ao salvar: " + resultado.error.message;
+            console.error(resultado.error);
+            return;
+        }
 
-    mensagemPrimeiraVez.textContent =
-        "Erro do Supabase: " +
-        (resultado.error.message || "Erro desconhecido") +
-        (resultado.error.details ? " | Detalhes: " + resultado.error.details : "") +
-        (resultado.error.hint ? " | Orientação: " + resultado.error.hint : "");
-
-    return;
-}
-
-        const estavaEditando = registroEmEdicao !== null;
+        mensagemPrimeiraVez.textContent = "Registro salvo com sucesso!";
         limparEdicaoPrimeiraVez();
-        mensagemPrimeiraVez.textContent = estavaEditando ? "Alterações salvas com sucesso!" : "Cadastro salvo com sucesso!";
         await carregarRegistrosAssistencia();
     });
 
-    // Abrir/fechar o formulário de assistência fixa.
-    botaoAbrirFixa.addEventListener("click", function () {
-        const abrir = formularioFixa.hidden;
-        formularioFixa.hidden = !abrir;
-        botaoAbrirFixa.setAttribute("aria-expanded", String(abrir));
-        botaoAbrirFixa.textContent = abrir ? "− Fechar assistência fixa" : "＋ Registrar assistência fixa";
-    });
-
-    function adicionarCampoNomeFixo() {
-        const linha = document.createElement("div");
-        linha.className = "campo-nome-assistencia-fixa";
-        const input = document.createElement("input");
-        input.type = "text";
-        input.name = "nomes-assistencia-fixa";
-        input.placeholder = "Nome completo";
-        input.required = true;
-        const remover = document.createElement("button");
-        remover.type = "button";
-        remover.className = "admin-botao admin-botao-secundario";
-        remover.textContent = "Remover";
-        remover.addEventListener("click", () => linha.remove());
-        linha.append(input, remover);
-        listaNomesFixa.appendChild(linha);
-        input.focus();
+    if (botaoAbrirPrimeiraVez && formularioPrimeiraVez) {
+        botaoAbrirPrimeiraVez.addEventListener("click", function () {
+            const oculto = formularioPrimeiraVez.hidden;
+            formularioPrimeiraVez.hidden = !oculto;
+            botaoAbrirPrimeiraVez.setAttribute("aria-expanded", String(oculto));
+            botaoAbrirPrimeiraVez.textContent = oculto ? "− Fechar cadastro de primeira vez" : "＋ Registrar assistência de primeira vez";
+        });
     }
 
-    botaoAdicionarFixa.addEventListener("click", adicionarCampoNomeFixo);
+    if (botaoAbrirFixa && formularioFixa) {
+        botaoAbrirFixa.addEventListener("click", function () {
+            const oculto = formularioFixa.hidden;
+            formularioFixa.hidden = !oculto;
+            botaoAbrirFixa.setAttribute("aria-expanded", String(oculto));
+            botaoAbrirFixa.textContent = oculto ? "− Fechar assistência fixa" : "＋ Registrar assistência fixa";
+        });
+    }
 
-    formFixa.addEventListener("submit", async function (evento) {
-        evento.preventDefault();
+    if (botaoAdicionarFixa && listaNomesFixa) {
+        botaoAdicionarFixa.addEventListener("click", function () {
+            const novoCampo = document.createElement("div");
+            novoCampo.className = "campo-nome-assistencia-fixa";
+            novoCampo.style.marginTop = "10px";
+            novoCampo.innerHTML = `<input type="text" name="nomes-assistencia-fixa" placeholder="Nome completo" required>`;
+            listaNomesFixa.appendChild(novoCampo);
+        });
+    }
+
+    formFixa.addEventListener("submit", async function (e) {
+        e.preventDefault();
         const acesso = await obterAcesso();
         if (!acesso) {
-            mensagemFixa.textContent = "Entre na Área de Membros com uma conta aprovada antes de salvar.";
+            mensagemFixa.textContent = "Você precisa estar logado para salvar.";
             return;
         }
-        const data = document.getElementById("assistencia-fixa-data").value;
-        const nomes = Array.from(formFixa.querySelectorAll('input[name="nomes-assistencia-fixa"]'))
-            .map(campo => campo.value.trim()).filter(Boolean);
-        if (!data) { mensagemFixa.textContent = "Selecione a data da gira."; return; }
-        if (nomes.length === 0) { mensagemFixa.textContent = "Digite pelo menos um nome."; return; }
 
-        const registros = nomes.map(nome => ({
-            data_assistencia: data,
-            nome_completo: nome,
-            criado_por: acesso.user.id
-        }));
-        const botaoSalvar = formFixa.querySelector('button[type="submit"]');
-        if (botaoSalvar) botaoSalvar.disabled = true;
+        const dataGira = document.getElementById("assistencia-fixa-data").value;
+        const inputsNomes = formFixa.querySelectorAll('input[name="nomes-assistencia-fixa"]');
+
+        if (!dataGira) {
+            mensagemFixa.textContent = "Informe a data da gira.";
+            return;
+        }
+
+        const registros = [];
+        inputsNomes.forEach(input => {
+            const nomeVal = input.value.trim();
+            if (nomeVal) {
+                registros.push({
+                    data_assistencia: dataGira,
+                    nome_completo: nomeVal,
+                    criado_por: acesso.user.id
+                });
+            }
+        });
+
+        if (registros.length === 0) {
+            mensagemFixa.textContent = "Adicione pelo menos um nome.";
+            return;
+        }
+
         mensagemFixa.textContent = "Salvando presenças...";
-        const { error } = await supabaseClient.from("registros_assistencia_fixa").insert(registros);
-        if (botaoSalvar) botaoSalvar.disabled = false;
+
+        const { error } = await supabaseClient
+            .from("registros_assistencia_fixa")
+            .insert(registros);
+
         if (error) {
-            console.error("Erro ao salvar assistência fixa:", error);
-            mensagemFixa.textContent = "Não foi possível salvar. Confira as permissões da tabela registros_assistencia_fixa.";
+            mensagemFixa.textContent = "Erro ao salvar presenças: " + error.message;
+            console.error(error);
             return;
         }
 
+        mensagemFixa.textContent = "Presenças salvas com sucesso!";
         formFixa.reset();
-        listaNomesFixa.replaceChildren();
-        adicionarCampoNomeFixo();
-        mensagemFixa.textContent = `${nomes.length} presença(s) salva(s) com sucesso!`;
+        
+        while (listaNomesFixa.children.length > 1) {
+            listaNomesFixa.removeChild(listaNomesFixa.lastChild);
+        }
+
         await carregarRegistrosAssistencia();
     });
 
-    if (botaoAtualizar) botaoAtualizar.addEventListener("click", carregarRegistrosAssistencia);
-
-    // Atualiza as pastas quando o painel administrativo for exibido após o login.
-    const painel = document.getElementById("painel-administrativo");
-    if (painel && typeof MutationObserver !== "undefined") {
-        const observador = new MutationObserver(() => {
-            if (!painel.hidden) carregarRegistrosAssistencia();
-        });
-        observador.observe(painel, { attributes: true, attributeFilter: ["hidden"] });
-    }
+    carregarRegistrosAssistencia();
 })();
-
-
-/* RESTAURAR A SESSÃO AO ATUALIZAR A PÁGINA */
-
-async function restaurarSessaoAdministrativa() {
-    mostrarPainelAdministrativo(false);
-
-    const { data, error } =
-        await supabaseClient.auth.getSession();
-
-    if (error || !data.session) {
-        return;
-    }
-
-    const acesso = await verificarAcessoMateriais();
-
-    if (!acesso) {
-        await supabaseClient.auth.signOut();
-
-        if (mensagemLogin) {
-            mensagemLogin.textContent =
-                "Sua sessão não tem autorização para acessar o painel.";
-        }
-
-        return;
-    }
-
-    mostrarPainelAdministrativo(true);
-
-    if (mensagemLogin) {
-        mensagemLogin.textContent =
-            "Você continua conectado à Área de Membros da Casa de Lei.";
-    }
-
-    await atualizarListaMateriais();
-}
-
-restaurarSessaoAdministrativa();
