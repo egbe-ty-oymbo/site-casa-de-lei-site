@@ -165,105 +165,236 @@
 
         
 
-<!-- INÍCIO: ASSISTÊNCIA FIXA -->
-<div class="assistencia-fixa">
 
-    <h3>Assistência fixa</h3>
-    <p>Registro de presença das pessoas que já frequentam a casa.</p>
+<!-- REGISTRO DA ASSISTÊNCIA: PRIMEIRA VEZ E ASSISTÊNCIA FIXA -->
+<div class="admin-cartao assistencia-admin-cartao">
+    <div class="admin-titulo-secao">
+        <span class="admin-icone">▣</span>
+        <div>
+            <h3>Registro da Assistência</h3>
+            <p>Os registros ficam organizados pela data da gira.</p>
+        </div>
+    </div>
 
-    <button
-        type="button"
-        id="abrir-assistencia-fixa"
-        class="admin-botao admin-botao-secundario"
-        aria-expanded="false"
-        aria-controls="formulario-assistencia-fixa">
-        ＋ Registrar assistência fixa
-    </button>
+    <!-- PRIMEIRA VEZ -->
+    <div class="admin-cartao">
+        <h3>Assistência de primeira vez</h3>
+        <p>Cadastro completo de quem está visitando a casa pela primeira vez.</p>
 
-    <div id="formulario-assistencia-fixa" hidden>
+        <button type="button" id="abrir-registro-assistencia"
+            class="admin-botao admin-botao-secundario"
+            aria-expanded="false" aria-controls="formulario-registro-assistencia">
+            ＋ Registrar assistência de primeira vez
+        </button>
 
-        <form id="form-assistencia-fixa">
+        <div id="formulario-registro-assistencia" hidden>
+            <form id="form-registro-assistencia">
+                <div class="admin-formulario">
 
-            <div class="admin-formulario">
+                    <div class="admin-campo">
+                        <label for="assistencia-data">Data da gira *</label>
+                        <input type="date" id="assistencia-data" name="data_assistencia" required>
+                    </div>
 
-                <div class="admin-campo">
-                    <label for="assistencia-fixa-data">Data da gira</label>
-                    <input
-                        type="date"
-                        id="assistencia-fixa-data"
-                        name="data-assistencia"
-                        required>
+                    <div class="admin-campo">
+                        <label for="assistencia-gira">Gira frequentada *</label>
+                        <input type="text" id="assistencia-gira" name="gira"
+                            placeholder="Ex.: Gira de Caboclos" required>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="assistencia-responsavel">Responsável pela recepção *</label>
+                        <input type="text" id="assistencia-responsavel" name="responsavel"
+                            placeholder="Nome de quem recebeu" required>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="assistencia-nome">Nome completo *</label>
+                        <input type="text" id="assistencia-nome" name="nome"
+                            autocomplete="name" required>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="assistencia-email">E-mail</label>
+                        <input type="email" id="assistencia-email" name="email"
+                            autocomplete="email">
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="assistencia-telefone">Telefone / WhatsApp</label>
+                        <input type="tel" id="assistencia-telefone" name="telefone"
+                            autocomplete="tel" placeholder="(11) 99999-9999">
+                    </div>
+
+                    <div class="admin-campo admin-campo-completo">
+                        <label for="assistencia-endereco">Endereço</label>
+                        <input type="text" id="assistencia-endereco" name="endereco"
+                            autocomplete="street-address"
+                            placeholder="Rua, número, bairro e cidade">
+                    </div>
+
+                    <div class="admin-campo admin-campo-completo">
+                        <label>Como conheceu a casa? (pode selecionar mais de uma opção)</label>
+                        <div class="assistencia-opcoes">
+                            <label><input type="checkbox" name="assistencia-origem" value="Indicação"> Indicação</label>
+                            <label><input type="checkbox" name="assistencia-origem" value="Google"> Google</label>
+                            <label><input type="checkbox" name="assistencia-origem" value="Instagram"> Instagram</label>
+                            <label><input type="checkbox" name="assistencia-origem" value="Facebook"> Facebook</label>
+                            <label><input type="checkbox" name="assistencia-origem" value="Passou em frente à casa"> Passou em frente à casa</label>
+                            <label><input type="checkbox" name="assistencia-origem" value="Outro"> Outro</label>
+                        </div>
+                    </div>
+
+                    <div class="admin-campo admin-campo-completo">
+                        <label for="assistencia-origem-detalhes">
+                            Se foi indicação ou marcou “Outro”, informe os detalhes
+                        </label>
+                        <input type="text" id="assistencia-origem-detalhes"
+                            name="detalhe-origem"
+                            placeholder="Nome da pessoa ou outra origem">
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="assistencia-terreiro">Já frequenta outro terreiro? *</label>
+                        <select id="assistencia-terreiro" name="frequenta-terreiro" required>
+                            <option value="">Selecione</option>
+                            <option value="Sim">Sim</option>
+                            <option value="Não">Não</option>
+                        </select>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="assistencia-grupo">
+                            Deseja participar do grupo da assistência? *
+                        </label>
+                        <select id="assistencia-grupo" name="deseja-grupo" required>
+                            <option value="">Selecione</option>
+                            <option value="Sim">Sim</option>
+                            <option value="Não">Não</option>
+                        </select>
+                    </div>
+
+                    <div class="admin-campo admin-campo-completo">
+                        <label>Motivo da visita (pode selecionar mais de uma opção)</label>
+                        <div class="assistencia-opcoes">
+                            <label><input type="checkbox" name="assistencia-motivo" value="Saúde"> Saúde</label>
+                            <label><input type="checkbox" name="assistencia-motivo" value="Amor / relacionamento"> Amor / relacionamento</label>
+                            <label><input type="checkbox" name="assistencia-motivo" value="Financeiro"> Financeiro</label>
+                            <label><input type="checkbox" name="assistencia-motivo" value="Emprego"> Emprego</label>
+                            <label><input type="checkbox" name="assistencia-motivo" value="Pessoal / familiar"> Pessoal / familiar</label>
+                            <label><input type="checkbox" name="assistencia-motivo" value="Curiosidade / conhecer a casa"> Curiosidade / conhecer a casa</label>
+                            <label><input type="checkbox" name="assistencia-motivo" value="Espiritual"> Espiritual</label>
+                            <label><input type="checkbox" name="assistencia-motivo" value="Outro"> Outro</label>
+                        </div>
+                    </div>
+
+                    <div class="admin-campo admin-campo-completo">
+                        <label for="assistencia-motivo-outro">
+                            Se marcou “Outro”, especifique
+                        </label>
+                        <input type="text" id="assistencia-motivo-outro"
+                            name="motivo-outro"
+                            placeholder="Outro motivo, se necessário">
+                    </div>
+
+                    <div class="admin-campo admin-campo-completo">
+                        <label for="assistencia-observacoes">
+                            Observações necessárias para o acolhimento (opcional)
+                        </label>
+                        <textarea id="assistencia-observacoes" name="observacoes"
+                            rows="3"
+                            placeholder="Registre somente informações necessárias."></textarea>
+                    </div>
                 </div>
 
-                <div class="admin-campo admin-campo-completo">
-                    <label>Nome das pessoas presentes</label>
+                <button type="submit"
+                    class="admin-botao admin-botao-principal">
+                    Salvar registro
+                </button>
 
-                    <div id="lista-nomes-assistencia-fixa">
-                        <div class="campo-nome-assistencia-fixa">
-                            <input
-                                type="text"
-                                name="nomes-assistencia-fixa"
-                                placeholder="Nome completo"
-                                required>
+                <p id="mensagem-registro-assistencia"
+                    role="status" aria-live="polite"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- ASSISTÊNCIA FIXA -->
+    <div class="admin-cartao">
+        <h3>Assistência fixa</h3>
+        <p>Registro de presença das pessoas que já frequentam a casa.</p>
+
+        <button type="button" id="abrir-assistencia-fixa"
+            class="admin-botao admin-botao-secundario"
+            aria-expanded="false" aria-controls="formulario-assistencia-fixa">
+            ＋ Registrar assistência fixa
+        </button>
+
+        <div id="formulario-assistencia-fixa" hidden>
+            <form id="form-assistencia-fixa">
+                <div class="admin-formulario">
+
+                    <div class="admin-campo">
+                        <label for="assistencia-fixa-data">Data da gira *</label>
+                        <input type="date" id="assistencia-fixa-data"
+                            name="data-assistencia" required>
+                    </div>
+
+                    <div class="admin-campo admin-campo-completo">
+                        <label>Nome das pessoas presentes *</label>
+                        <div id="lista-nomes-assistencia-fixa">
+                            <div class="campo-nome-assistencia-fixa">
+                                <input type="text"
+                                    name="nomes-assistencia-fixa"
+                                    placeholder="Nome completo" required>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-            </div>
+                <button type="button"
+                    id="adicionar-pessoa-assistencia-fixa"
+                    class="admin-botao admin-botao-secundario">
+                    ＋ Adicionar pessoa
+                </button>
 
-            <button
-                type="button"
-                id="adicionar-pessoa-assistencia-fixa"
-                class="admin-botao admin-botao-secundario">
-                ＋ Adicionar pessoa
-            </button>
+                <button type="submit"
+                    class="admin-botao admin-botao-principal">
+                    Salvar presenças
+                </button>
 
-            <button
-                type="submit"
-                class="admin-botao admin-botao-principal">
-                Salvar presenças
-            </button>
-
-            <p
-                id="mensagem-assistencia-fixa"
-                role="status"
-                aria-live="polite">
-            </p>
-
-        </form>
-
-        <div id="lista-registros-assistencia-fixa"></div>
-
+                <p id="mensagem-assistencia-fixa"
+                    role="status" aria-live="polite"></p>
+            </form>
+        </div>
     </div>
-</div>
-<!-- FIM: ASSISTÊNCIA FIXA -->
 
-<div class="admin-cartao admin-cartao-lista">
-    <div class="admin-lista-cabecalho">
-        <div class="admin-titulo-secao">
-            <span class="admin-icone">▤</span>
-            <div>
-                <h3>Registro da Assistência</h3>
-                <p>Consulte as presenças organizadas por data da gira.</p>
+    <!-- LISTAGEM CONJUNTA POR DATA -->
+    <div class="admin-cartao admin-cartao-lista">
+        <div class="admin-lista-cabecalho">
+            <div class="admin-titulo-secao">
+                <span class="admin-icone">▤</span>
+                <div>
+                    <h3>Registros por data</h3>
+                    <p>Dentro de cada data, os cadastros ficam separados por categoria.</p>
+                </div>
             </div>
+
+            <button type="button"
+                id="atualizar-registros-assistencia"
+                class="admin-botao admin-botao-secundario">
+                ↻ Atualizar lista
+            </button>
         </div>
 
-        <button
-            type="button"
-            id="atualizar-registros-assistencia"
-            class="admin-botao admin-botao-secundario">
-            ↻ Atualizar lista
-        </button>
+        <div id="lista-registros-assistencia"></div>
     </div>
-
-    <div id="lista-registros-assistencia"></div>
 </div>
 
-</section>        </section>
-      </section>
+</section>
 
+<!-- INÍCIO -->
 
-    <!-- INÍCIO -->
+    
     <section id="inicio" class="boas-vindas">
         <p class="subtitulo">UM CAMINHO DE FÉ, AMOR E CARIDADE</p>
 
