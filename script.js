@@ -999,6 +999,104 @@ if (botaoSairAdministracao) {
 
 /* RESTAURAR A SESSÃO AO ATUALIZAR A PÁGINA */
 
+/* ASSISTÊNCIA FIXA: ABRIR, ADICIONAR NOMES E SALVAR */
+
+(function () {
+    const botaoAbrir = document.getElementById("abrir-assistencia-fixa");
+    const formulario = document.getElementById("formulario-assistencia-fixa");
+    const form = document.getElementById("form-assistencia-fixa");
+    const listaNomes = document.getElementById("lista-nomes-assistencia-fixa");
+    const botaoAdicionar = document.getElementById("adicionar-pessoa-assistencia-fixa");
+    const mensagem = document.getElementById("mensagem-assistencia-fixa");
+
+    if (!botaoAbrir || !formulario || !form || !listaNomes || !botaoAdicionar || !mensagem) {
+        console.error("Elementos da Assistência Fixa não encontrados.");
+        return;
+    }
+
+    botaoAbrir.addEventListener("click", function () {
+        const vaiAbrir = formulario.hidden;
+
+        formulario.hidden = !vaiAbrir;
+        botaoAbrir.setAttribute("aria-expanded", String(vaiAbrir));
+
+        botaoAbrir.textContent = vaiAbrir
+            ? "− Fechar assistência fixa"
+            : "＋ Registrar assistência fixa";
+    });
+
+    botaoAdicionar.addEventListener("click", function () {
+        const campo = document.createElement("div");
+        campo.className = "campo-nome-assistencia-fixa";
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.name = "nomes-assistencia-fixa";
+        input.placeholder = "Nome completo";
+        input.required = true;
+
+        campo.appendChild(input);
+        listaNomes.appendChild(campo);
+        input.focus();
+    });
+
+    form.addEventListener("submit", async function (evento) {
+        evento.preventDefault();
+
+        mensagem.textContent = "Salvando presenças...";
+
+        const data = document.getElementById("assistencia-fixa-data").value;
+
+        const nomes = Array.from(
+            form.querySelectorAll('input[name="nomes-assistencia-fixa"]')
+        )
+            .map(campo => campo.value.trim())
+            .filter(nome => nome !== "");
+
+        if (!data || nomes.length === 0) {
+            mensagem.textContent = "Informe a data da gira e pelo menos um nome.";
+            return;
+        }
+
+        const { data: { user }, error: erroUsuario } =
+            await supabaseClient.auth.getUser();
+
+        if (erroUsuario || !user) {
+            mensagem.textContent = "Entre na Área de Membros antes de salvar.";
+            return;
+        }
+
+        const registros = nomes.map(nome => ({
+            data_assistencia: data,
+            nome_completo: nome,
+            criado_por: user.id
+        }));
+
+        const { error } = await supabaseClient
+            .from("registros_assistencia_fixa")
+            .insert(registros);
+
+        if (error) {
+            console.error("Erro ao salvar assistência fixa:", error);
+            mensagem.textContent = "Não foi possível salvar. Verifique as permissões.";
+            return;
+        }
+
+        mensagem.textContent = "Presenças salvas com sucesso!";
+
+        form.reset();
+
+        listaNomes.innerHTML = `
+            <div class="campo-nome-assistencia-fixa">
+                <input type="text"
+                    name="nomes-assistencia-fixa"
+                    placeholder="Nome completo"
+                    required>
+            </div>
+        `;
+    });
+})();
+
 async function restaurarSessaoAdministrativa() {
     mostrarPainelAdministrativo(false);
 
