@@ -903,12 +903,11 @@ if (botaoSairAdministracao) {
             containerData.appendChild(resumoData);
 
             if (valor.primeira.length > 0) {
-                containerData.appendChild(criarPastaRegistros(`Primeira vez (${valor.primeira.length})`, valor.primeira, "primeira", acesso));
+                containerData.appendChild(criarPastaRegistros("Primeira vez", valor.primeira, "primeira", acesso));
             }
             if (valor.fixa.length > 0) {
-                containerData.appendChild(criarPastaRegistros(`Assistência fixa (${valor.fixa.length})`, valor.fixa, "fixa", acesso));
+                containerData.appendChild(criarPastaRegistros("Assistência fixa", valor.fixa, "fixa", acesso));
             }
-
             lista.appendChild(containerData);
         });
     }
