@@ -627,71 +627,35 @@ if (botaoSairAdministracao) {
     });
 }
 
-/* ABRIR E FECHAR O REGISTRO DA ASSISTÊNCIA */
+/* REGISTRO DA ASSISTÊNCIA — PRIMEIRA VEZ E ASSISTÊNCIA FIXA */
 (function () {
-    const botaoAbrir = document.getElementById("abrir-registro-assistencia");
-    const formulario = document.getElementById("formulario-registro-assistencia");
-
-    if (!botaoAbrir || !formulario) {
-        console.error("Registro da Assistência: botão ou formulário não encontrado.");
-        return;
-    }
-
-    botaoAbrir.addEventListener("click", function () {
-        const vaiAbrir = formulario.hidden;
-
-        formulario.hidden = !vaiAbrir;
-        botaoAbrir.setAttribute("aria-expanded", String(vaiAbrir));
-        botaoAbrir.textContent = vaiAbrir
-            ? "− Fechar registro da assistência"
-            : "＋ Abrir registro da assistência";
-    });
-})();
-
-
-/* SALVAR, CONSULTAR, EDITAR E EXCLUIR REGISTROS DA ASSISTÊNCIA */
-(function () {
-    const form = document.getElementById("form-registro-assistencia");
-    const mensagem = document.getElementById("mensagem-registro-assistencia");
     const lista = document.getElementById("lista-registros-assistencia");
     const botaoAtualizar = document.getElementById("atualizar-registros-assistencia");
+    const formPrimeiraVez = document.getElementById("form-registro-assistencia");
+    const mensagemPrimeiraVez = document.getElementById("mensagem-registro-assistencia");
+    const botaoAbrirPrimeiraVez = document.getElementById("abrir-registro-assistencia");
+    const formularioPrimeiraVez = document.getElementById("formulario-registro-assistencia");
 
-    if (!form || !mensagem || !lista) {
-        console.error("Formulário ou lista da assistência não encontrados.");
+    const formFixa = document.getElementById("form-assistencia-fixa");
+    const botaoAbrirFixa = document.getElementById("abrir-assistencia-fixa");
+    const formularioFixa = document.getElementById("formulario-assistencia-fixa");
+    const listaNomesFixa = document.getElementById("lista-nomes-assistencia-fixa");
+    const botaoAdicionarFixa = document.getElementById("adicionar-pessoa-assistencia-fixa");
+    const mensagemFixa = document.getElementById("mensagem-assistencia-fixa");
+
+    if (!lista || !formPrimeiraVez || !mensagemPrimeiraVez || !formFixa ||
+        !botaoAbrirFixa || !formularioFixa || !listaNomesFixa ||
+        !botaoAdicionarFixa || !mensagemFixa) {
+        console.error("Assistência: confira os elementos do formulário no index.html.");
         return;
     }
 
     let registroEmEdicao = null;
 
-    // Cria o botão de cancelar edição sem alterar o HTML existente.
-    const botaoCancelar = document.createElement("button");
-    botaoCancelar.type = "button";
-    botaoCancelar.className = "admin-botao admin-botao-secundario";
-    botaoCancelar.textContent = "Cancelar edição";
-    botaoCancelar.hidden = true;
-    form.appendChild(botaoCancelar);
-
-    function valoresMarcados(nome) {
-        return Array.from(
-            form.querySelectorAll(`input[name="${nome}"]:checked`)
-        ).map(campo => campo.value);
-    }
-
-    function marcarOpcoes(nome, valores) {
-        const selecionados = valores || [];
-
-        form.querySelectorAll(`input[name="${nome}"]`).forEach(campo => {
-            campo.checked = selecionados.includes(campo.value);
-        });
-    }
-
-    async function obterUsuarioEAcesso() {
+    async function obterAcesso() {
         const { data: { user }, error: erroUsuario } =
             await supabaseClient.auth.getUser();
-
-        if (erroUsuario || !user) {
-            return { user: null, administrador: false };
-        }
+        if (erroUsuario || !user) return null;
 
         const { data: perfil, error } = await supabaseClient
             .from("perfis_casa")
@@ -699,403 +663,401 @@ if (botaoSairAdministracao) {
             .eq("id", user.id)
             .maybeSingle();
 
-        if (error || !perfil || !perfil.aprovado) {
-            return { user, administrador: false };
-        }
-
-        return {
-            user,
-            administrador: perfil.administrador === true
-        };
+        if (error || !perfil || !perfil.aprovado) return null;
+        return { user, administrador: perfil.administrador === true };
     }
 
-    function limparEdicao() {
+    function dataExibicao(data) {
+        return data ? data.split("-").reverse().join("/") : "Sem data registrada";
+    }
+
+    function criarBotao(texto, acao) {
+        const botao = document.createElement("button");
+        botao.type = "button";
+        botao.className = "admin-botao admin-botao-secundario";
+        botao.textContent = texto;
+        botao.addEventListener("click", acao);
+        return botao;
+    }
+
+    function valorCampo(nome) {
+        const campo = formPrimeiraVez.elements[nome];
+        return campo ? campo.value.trim() : "";
+    }
+
+    function valoresMarcados(nome) {
+        return Array.from(formPrimeiraVez.querySelectorAll(
+            `input[name="${nome}"]:checked`
+        )).map(campo => campo.value);
+    }
+
+    function marcarOpcoes(nome, valores) {
+        const marcados = Array.isArray(valores) ? valores : [];
+        formPrimeiraVez.querySelectorAll(`input[name="${nome}"]`).forEach(campo => {
+            campo.checked = marcados.includes(campo.value);
+        });
+    }
+
+    function limparEdicaoPrimeiraVez() {
         registroEmEdicao = null;
-        form.reset();
-        botaoCancelar.hidden = true;
-
-        const botaoSalvar = form.querySelector('button[type="submit"]');
-        if (botaoSalvar) {
-            botaoSalvar.textContent = "Salvar registro";
-        }
+        formPrimeiraVez.reset();
+        const salvar = formPrimeiraVez.querySelector('button[type="submit"]');
+        if (salvar) salvar.textContent = "Salvar registro";
+        const cancelar = document.getElementById("cancelar-edicao-assistencia");
+        if (cancelar) cancelar.hidden = true;
     }
 
-    botaoCancelar.addEventListener("click", function () {
-        limparEdicao();
-        mensagem.textContent = "Edição cancelada.";
-    });
-
-    function iniciarEdicao(pessoa) {
+    function iniciarEdicaoPrimeiraVez(pessoa) {
         registroEmEdicao = pessoa.id;
-
-        document.getElementById("assistencia-data").value =
-            pessoa.data_assistencia || "";
-
-        form.elements["gira"].value = pessoa.gira || "";
-        form.elements["responsavel"].value = pessoa.responsavel_recepcao || "";
-        form.elements["nome"].value = pessoa.nome_completo || "";
-        form.elements["email"].value = pessoa.email || "";
-        form.elements["telefone"].value = pessoa.telefone || "";
-        form.elements["endereco"].value = pessoa.endereco || "";
-        form.elements["detalhe-origem"].value = pessoa.detalhe_origem || "";
-        form.elements["frequenta-terreiro"].value =
-            pessoa.frequenta_outro_terreiro || "";
-
-        form.elements["deseja-grupo"].value =
-            pessoa.deseja_grupo_assistencia ? "Sim" : "Não";
-
-        form.elements["observacoes"].value = pessoa.observacoes || "";
-
-        marcarOpcoes("assistencia-origem", pessoa.como_conheceu);
+        formPrimeiraVez.elements["data_assistencia"].value = pessoa.data_assistencia || "";
+        formPrimeiraVez.elements["gira"].value = pessoa.gira || "";
+        formPrimeiraVez.elements["responsavel"].value = pessoa.responsavel_recepcao || "";
+        formPrimeiraVez.elements["nome"].value = pessoa.nome || "";
+        formPrimeiraVez.elements["email"].value = pessoa.email || "";
+        formPrimeiraVez.elements["telefone"].value = pessoa.telefone || "";
+        formPrimeiraVez.elements["endereco"].value = pessoa.endereco || "";
+        formPrimeiraVez.elements["detalhe-origem"].value = pessoa.origem_detalhes || "";
+        formPrimeiraVez.elements["frequenta-terreiro"].value = pessoa.frequenta_terreiro || "";
+        formPrimeiraVez.elements["deseja-grupo"].value = pessoa.deseja_grupo_assistencia || "";
+        formPrimeiraVez.elements["motivo-outro"].value = pessoa.motivo_outro || "";
+        formPrimeiraVez.elements["observacoes"].value = pessoa.observacoes || "";
+        marcarOpcoes("assistencia-origem", pessoa.origem);
         marcarOpcoes("assistencia-motivo", pessoa.motivos_visita);
 
-        const botaoSalvar = form.querySelector('button[type="submit"]');
-        if (botaoSalvar) {
-            botaoSalvar.textContent = "Salvar alterações";
+        formularioPrimeiraVez.hidden = false;
+        if (botaoAbrirPrimeiraVez) {
+            botaoAbrirPrimeiraVez.textContent = "− Fechar cadastro de primeira vez";
+            botaoAbrirPrimeiraVez.setAttribute("aria-expanded", "true");
         }
-
-        botaoCancelar.hidden = false;
-        mensagem.textContent =
-            "Editando cadastro de " + (pessoa.nome_completo || "assistido") + ".";
-
-        form.scrollIntoView({ behavior: "smooth", block: "start" });
+        const salvar = formPrimeiraVez.querySelector('button[type="submit"]');
+        if (salvar) salvar.textContent = "Salvar alterações";
+        const cancelar = document.getElementById("cancelar-edicao-assistencia");
+        if (cancelar) cancelar.hidden = false;
+        mensagemPrimeiraVez.textContent = `Editando cadastro de ${pessoa.nome || "visitante"}.`;
+        formPrimeiraVez.scrollIntoView({ behavior: "smooth", block: "start" });
     }
 
-    async function carregarRegistros() {
+    function criarPastaRegistros(titulo, pessoas, tipo, acesso) {
+        const pasta = document.createElement("details");
+        const resumo = document.createElement("summary");
+        resumo.textContent = `${tipo === "fixa" ? "📂" : "📁"} ${titulo} (${pessoas.length})`;
+        pasta.appendChild(resumo);
+
+        pessoas.forEach(pessoa => {
+            if (tipo === "primeira") {
+                const item = document.createElement("details");
+                const nome = document.createElement("summary");
+                nome.textContent = pessoa.nome || "Visitante sem nome";
+                const conteudo = document.createElement("div");
+                conteudo.style.whiteSpace = "pre-wrap";
+                const linhas = [
+                    `Gira: ${pessoa.gira || "—"}`,
+                    `Responsável pela recepção: ${pessoa.responsavel_recepcao || "—"}`,
+                    `Telefone: ${pessoa.telefone || "—"}`,
+                    `E-mail: ${pessoa.email || "—"}`,
+                    `Endereço: ${pessoa.endereco || "—"}`,
+                    `Como conheceu a casa: ${(pessoa.origem || []).join(", ") || "—"}`,
+                    `Detalhes da origem: ${pessoa.origem_detalhes || "—"}`,
+                    `Frequenta outro terreiro: ${pessoa.frequenta_terreiro || "—"}`,
+                    `Deseja participar do grupo: ${pessoa.deseja_grupo_assistencia || "—"}`,
+                    `Motivos da visita: ${(pessoa.motivos_visita || []).join(", ") || "—"}`,
+                    `Outro motivo: ${pessoa.motivo_outro || "—"}`,
+                    `Observações: ${pessoa.observacoes || "—"}`
+                ];
+                conteudo.textContent = linhas.join("\n");
+                if (acesso.administrador) {
+                    const acoes = document.createElement("div");
+                    acoes.style.display = "flex";
+                    acoes.style.gap = "8px";
+                    acoes.style.flexWrap = "wrap";
+                    acoes.style.marginTop = "10px";
+                    acoes.append(
+                        criarBotao("✏️ Editar", () => iniciarEdicaoPrimeiraVez(pessoa)),
+                        criarBotao("🗑️ Excluir", async () => {
+                            if (!confirm(`Excluir o cadastro de ${pessoa.nome || "visitante"}?`)) return;
+                            const { error } = await supabaseClient
+                                .from("registros_assistencia")
+                                .delete().eq("id", pessoa.id);
+                            if (error) {
+                                mensagemPrimeiraVez.textContent = "Não foi possível excluir. Verifique as permissões do Supabase.";
+                                console.error(error);
+                                return;
+                            }
+                            if (registroEmEdicao === pessoa.id) limparEdicaoPrimeiraVez();
+                            mensagemPrimeiraVez.textContent = "Cadastro excluído.";
+                            await carregarRegistrosAssistencia();
+                        })
+                    );
+                    conteudo.appendChild(acoes);
+                }
+                item.append(nome, conteudo);
+                pasta.appendChild(item);
+            } else {
+                const item = document.createElement("div");
+                item.style.padding = "9px 0";
+                item.style.borderBottom = "1px solid #ddd";
+                const nome = document.createElement("strong");
+                nome.textContent = pessoa.nome_completo || "Nome não informado";
+                item.appendChild(nome);
+                if (acesso.administrador) {
+                    const acoes = document.createElement("div");
+                    acoes.style.display = "flex";
+                    acoes.style.gap = "8px";
+                    acoes.style.flexWrap = "wrap";
+                    acoes.style.marginTop = "8px";
+                    acoes.append(
+                        criarBotao("✏️ Editar", async () => {
+                            const novoNome = prompt("Edite o nome completo:", pessoa.nome_completo || "");
+                            if (novoNome === null) return;
+                            if (!novoNome.trim()) { alert("Informe um nome válido."); return; }
+                            const { error } = await supabaseClient
+                                .from("registros_assistencia_fixa")
+                                .update({ nome_completo: novoNome.trim() }).eq("id", pessoa.id);
+                            if (error) {
+                                mensagemFixa.textContent = "Não foi possível editar o nome.";
+                                console.error(error);
+                                return;
+                            }
+                            mensagemFixa.textContent = "Nome atualizado.";
+                            await carregarRegistrosAssistencia();
+                        }),
+                        criarBotao("🗑️ Excluir", async () => {
+                            if (!confirm(`Excluir a presença de ${pessoa.nome_completo || "esta pessoa"}?`)) return;
+                            const { error } = await supabaseClient
+                                .from("registros_assistencia_fixa")
+                                .delete().eq("id", pessoa.id);
+                            if (error) {
+                                mensagemFixa.textContent = "Não foi possível excluir a presença.";
+                                console.error(error);
+                                return;
+                            }
+                            mensagemFixa.textContent = "Presença excluída.";
+                            await carregarRegistrosAssistencia();
+                        })
+                    );
+                    item.appendChild(acoes);
+                }
+                pasta.appendChild(item);
+            }
+        });
+        return pasta;
+    }
+
+    async function carregarRegistrosAssistencia() {
+        if (!lista) return;
         lista.textContent = "Carregando registros...";
-
-        const { data: registros, error } = await supabaseClient
-            .from("registros_assistencia")
-            .select("*")
-            .order("data_assistencia", { ascending: false })
-            .order("criado_em", { ascending: false });
-
-        if (error) {
-            console.error("Erro ao carregar assistências:", error);
-            lista.textContent =
-                "Não foi possível carregar os registros. Verifique sua autorização.";
+        const acesso = await obterAcesso();
+        if (!acesso) {
+            lista.textContent = "Entre com uma conta aprovada para consultar os registros.";
             return;
         }
 
-        const acesso = await obterUsuarioEAcesso();
-        lista.replaceChildren();
+        const [primeira, fixa] = await Promise.all([
+            supabaseClient.from("registros_assistencia").select("*").order("data_assistencia", { ascending: false }).order("created_at", { ascending: false }),
+            supabaseClient.from("registros_assistencia_fixa").select("id, data_assistencia, nome_completo, criado_por, criado_em").order("data_assistencia", { ascending: false }).order("criado_em", { ascending: false })
+        ]);
 
-        if (!registros || registros.length === 0) {
+        if (primeira.error) console.error("Erro ao consultar primeira vez:", primeira.error);
+        if (fixa.error) console.error("Erro ao consultar assistência fixa:", fixa.error);
+        lista.replaceChildren();
+        if (primeira.error && fixa.error) {
+            lista.textContent = "Não foi possível carregar os registros. Confira as permissões e as tabelas no Supabase.";
+            return;
+        }
+
+        const grupos = new Map();
+        (primeira.data || []).forEach(pessoa => {
+            const data = pessoa.data_assistencia || "sem-data";
+            if (!grupos.has(data)) grupos.set(data, { primeira: [], fixa: [] });
+            grupos.get(data).primeira.push(pessoa);
+        });
+        (fixa.data || []).forEach(pessoa => {
+            const data = pessoa.data_assistencia || "sem-data";
+            if (!grupos.has(data)) grupos.set(data, { primeira: [], fixa: [] });
+            grupos.get(data).fixa.push(pessoa);
+        });
+
+        if (grupos.size === 0) {
             lista.textContent = "Ainda não há registros cadastrados.";
             return;
         }
 
-        const grupos = {};
-
-        registros.forEach(pessoa => {
-            const data = pessoa.data_assistencia;
-            if (!grupos[data]) grupos[data] = [];
-            grupos[data].push(pessoa);
-        });
-
-        Object.entries(grupos).forEach(([data, pessoas]) => {
-            const pasta = document.createElement("details");
-            const titulo = document.createElement("summary");
-            const dataFormatada = data.split("-").reverse().join("/");
-
-            titulo.textContent =
-                `📁 Assistência de ${dataFormatada} (${pessoas.length})`;
-
-            pasta.appendChild(titulo);
-
-            pessoas.forEach(pessoa => {
-                const item = document.createElement("details");
-                const nome = document.createElement("summary");
-                const conteudo = document.createElement("div");
-
-                nome.textContent = pessoa.nome_completo || "Sem nome";
-                conteudo.style.whiteSpace = "pre-wrap";
-
-                const linhas = [
-                    `Gira: ${pessoa.gira || "Não informado"}`,
-                    `Responsável pela recepção: ${pessoa.responsavel_recepcao || "Não informado"}`,
-                    `Telefone: ${pessoa.telefone || "Não informado"}`,
-                    `E-mail: ${pessoa.email || "Não informado"}`,
-                    `Endereço: ${pessoa.endereco || "Não informado"}`,
-                    `Origem: ${(pessoa.como_conheceu || []).join(", ") || "Não informado"}`,
-                    `Detalhe da origem: ${pessoa.detalhe_origem || "Não informado"}`,
-                    `Frequenta outro terreiro: ${pessoa.frequenta_outro_terreiro || "Não informado"}`,
-                    `Deseja participar do grupo: ${pessoa.deseja_grupo_assistencia ? "Sim" : "Não"}`,
-                    `Motivos: ${(pessoa.motivos_visita || []).join(", ") || "Não informado"}`,
-                    `Observações: ${pessoa.observacoes || "Nenhuma"}`
-                ];
-
-                conteudo.textContent = linhas.join("\n");
-                item.appendChild(nome);
-                item.appendChild(conteudo);
-
-                if (acesso.administrador) {
-                    const botoes = document.createElement("div");
-                    botoes.style.display = "flex";
-                    botoes.style.gap = "8px";
-                    botoes.style.flexWrap = "wrap";
-                    botoes.style.marginTop = "12px";
-
-                    const editar = document.createElement("button");
-                    editar.type = "button";
-                    editar.className = "admin-botao admin-botao-secundario";
-                    editar.textContent = "✏️ Editar";
-                    editar.addEventListener("click", function () {
-                        iniciarEdicao(pessoa);
-                    });
-
-                    const excluir = document.createElement("button");
-                    excluir.type = "button";
-                    excluir.className = "admin-botao admin-botao-secundario";
-                    excluir.textContent = "🗑️ Excluir";
-
-                    excluir.addEventListener("click", async function () {
-                        const confirmar = window.confirm(
-                            `Deseja realmente excluir o cadastro de "${pessoa.nome_completo}" da assistência de ${dataFormatada}? Esta ação não pode ser desfeita.`
-                        );
-
-                        if (!confirmar) return;
-
-                        excluir.disabled = true;
-                        mensagem.textContent = "Excluindo registro...";
-
-                        const { error } = await supabaseClient
-                            .from("registros_assistencia")
-                            .delete()
-                            .eq("id", pessoa.id);
-
-                        if (error) {
-                            console.error("Erro ao excluir assistência:", error);
-                            mensagem.textContent =
-                                "Não foi possível excluir. Verifique as permissões.";
-                            excluir.disabled = false;
-                            return;
-                        }
-
-                        if (registroEmEdicao === pessoa.id) {
-                            limparEdicao();
-                        }
-
-                        mensagem.textContent = "Registro excluído com sucesso!";
-                        await carregarRegistros();
-                    });
-
-                    botoes.appendChild(editar);
-                    botoes.appendChild(excluir);
-                    conteudo.appendChild(botoes);
-                }
-
-                pasta.appendChild(item);
-            });
-
-            lista.appendChild(pasta);
+        const datas = Array.from(grupos.keys()).sort((a, b) => b.localeCompare(a));
+        datas.forEach(data => {
+            const grupo = grupos.get(data);
+            const pastaData = document.createElement("details");
+            const resumoData = document.createElement("summary");
+            const total = grupo.primeira.length + grupo.fixa.length;
+            resumoData.textContent = `📅 ${data === "sem-data" ? "Registros antigos (sem data)" : dataExibicao(data)} — ${total} pessoa(s)`;
+            pastaData.appendChild(resumoData);
+            pastaData.appendChild(criarPastaRegistros("Primeira vez", grupo.primeira, "primeira", acesso));
+            pastaData.appendChild(criarPastaRegistros("Assistência fixa", grupo.fixa, "fixa", acesso));
+            lista.appendChild(pastaData);
         });
     }
 
-    form.addEventListener("submit", async function (evento) {
+    window.carregarRegistrosAssistencia = carregarRegistrosAssistencia;
+
+    // Abrir/fechar o cadastro de primeira vez.
+    if (botaoAbrirPrimeiraVez && formularioPrimeiraVez) {
+        botaoAbrirPrimeiraVez.addEventListener("click", function () {
+            const abrir = formularioPrimeiraVez.hidden;
+            formularioPrimeiraVez.hidden = !abrir;
+            botaoAbrirPrimeiraVez.setAttribute("aria-expanded", String(abrir));
+            botaoAbrirPrimeiraVez.textContent = abrir
+                ? "− Fechar cadastro de primeira vez"
+                : "＋ Registrar assistência de primeira vez";
+        });
+    }
+
+    // Botão de cancelar edição, criado aqui para não exigir outro bloco no HTML.
+    const cancelarEdicao = document.createElement("button");
+    cancelarEdicao.type = "button";
+    cancelarEdicao.id = "cancelar-edicao-assistencia";
+    cancelarEdicao.className = "admin-botao admin-botao-secundario";
+    cancelarEdicao.textContent = "Cancelar edição";
+    cancelarEdicao.hidden = true;
+    formPrimeiraVez.appendChild(cancelarEdicao);
+    cancelarEdicao.addEventListener("click", () => {
+        limparEdicaoPrimeiraVez();
+        mensagemPrimeiraVez.textContent = "Edição cancelada.";
+    });
+
+    formPrimeiraVez.addEventListener("submit", async function (evento) {
         evento.preventDefault();
-
-        mensagem.textContent = registroEmEdicao
-            ? "Salvando alterações..."
-            : "Salvando registro...";
-
-        const acesso = await obterUsuarioEAcesso();
-        const user = acesso.user;
-
-        if (!user) {
-            mensagem.textContent =
-                "Entre na Área de Membros antes de salvar.";
-            return;
-        }
-
-        if (registroEmEdicao && !acesso.administrador) {
-            mensagem.textContent =
-                "Somente administradores aprovados podem editar cadastros.";
-            return;
-        }
-
-        if (!registroEmEdicao) {
-            const { data: perfil, error: erroPerfil } = await supabaseClient
-                .from("perfis_casa")
-                .select("aprovado")
-                .eq("id", user.id)
-                .maybeSingle();
-
-            if (erroPerfil || !perfil || !perfil.aprovado) {
-                mensagem.textContent =
-                    "Sua conta não tem autorização para salvar registros.";
-                return;
-            }
-        }
-
-        const dataAssistencia =
-            document.getElementById("assistencia-data").value;
-
-        if (!dataAssistencia) {
-            mensagem.textContent = "Selecione a data da assistência.";
+        const acesso = await obterAcesso();
+        if (!acesso || !acesso.administrador) {
+            mensagemPrimeiraVez.textContent = "Somente administradores aprovados podem cadastrar ou alterar registros de primeira vez.";
             return;
         }
 
         const registro = {
-            data_assistencia: dataAssistencia,
-            nome_completo: form.elements["nome"].value.trim(),
-            telefone: form.elements["telefone"].value.trim(),
-            email: form.elements["email"].value.trim(),
-            endereco: form.elements["endereco"].value.trim(),
-            responsavel_recepcao: form.elements["responsavel"].value.trim(),
-            gira: form.elements["gira"].value.trim(),
-            como_conheceu: valoresMarcados("assistencia-origem"),
-            detalhe_origem: form.elements["detalhe-origem"].value.trim(),
-            frequenta_outro_terreiro: form.elements["frequenta-terreiro"].value,
-            deseja_grupo_assistencia:
-                form.elements["deseja-grupo"].value === "Sim",
+            data_assistencia: valorCampo("data_assistencia"),
+            gira: valorCampo("gira"),
+            responsavel_recepcao: valorCampo("responsavel"),
+            nome: valorCampo("nome"),
+            email: valorCampo("email") || null,
+            endereco: valorCampo("endereco") || null,
+            telefone: valorCampo("telefone") || null,
+            origem: valoresMarcados("assistencia-origem"),
+            origem_detalhes: valorCampo("detalhe-origem") || null,
+            frequenta_terreiro: valorCampo("frequenta-terreiro"),
+            deseja_grupo_assistencia: valorCampo("deseja-grupo"),
             motivos_visita: valoresMarcados("assistencia-motivo"),
-            observacoes: form.elements["observacoes"].value.trim()
+            motivo_outro: valorCampo("motivo-outro") || null,
+            observacoes: valorCampo("observacoes") || null
         };
 
-        let error;
-
-        if (registroEmEdicao) {
-            const resultado = await supabaseClient
-                .from("registros_assistencia")
-                .update(registro)
-                .eq("id", registroEmEdicao);
-
-            error = resultado.error;
-        } else {
-            registro.criado_por = user.id;
-
-            const resultado = await supabaseClient
-                .from("registros_assistencia")
-                .insert(registro);
-
-            error = resultado.error;
+        if (!registro.data_assistencia || !registro.gira || !registro.responsavel_recepcao ||
+            !registro.nome || !registro.frequenta_terreiro || !registro.deseja_grupo_assistencia) {
+            mensagemPrimeiraVez.textContent = "Preencha todos os campos obrigatórios.";
+            return;
         }
 
-        if (error) {
-            console.error("Erro ao salvar assistência:", error);
-            mensagem.textContent =
-                "Não foi possível salvar. Verifique as permissões do Supabase.";
+        mensagemPrimeiraVez.textContent = "Salvando cadastro...";
+        const botaoSalvar = formPrimeiraVez.querySelector('button[type="submit"]');
+        if (botaoSalvar) botaoSalvar.disabled = true;
+
+        let resultado;
+        if (registroEmEdicao !== null) {
+            resultado = await supabaseClient.from("registros_assistencia")
+                .update(registro).eq("id", registroEmEdicao);
+        } else {
+            registro.criado_por = acesso.user.id;
+            resultado = await supabaseClient.from("registros_assistencia").insert(registro);
+        }
+
+        if (botaoSalvar) botaoSalvar.disabled = false;
+        if (resultado.error) {
+            console.error("Erro ao salvar primeira vez:", resultado.error);
+            mensagemPrimeiraVez.textContent = "Não foi possível salvar. Confira as permissões e a estrutura da tabela no Supabase.";
             return;
         }
 
         const estavaEditando = registroEmEdicao !== null;
-        limparEdicao();
-
-        mensagem.textContent = estavaEditando
-            ? "Alterações salvas com sucesso!"
-            : "Registro salvo com sucesso!";
-
-        await carregarRegistros();
+        limparEdicaoPrimeiraVez();
+        mensagemPrimeiraVez.textContent = estavaEditando ? "Alterações salvas com sucesso!" : "Cadastro salvo com sucesso!";
+        await carregarRegistrosAssistencia();
     });
 
-    if (botaoAtualizar) {
-        botaoAtualizar.addEventListener("click", carregarRegistros);
-    }
-
-    window.carregarRegistrosAssistencia = carregarRegistros;
-})();
-
-
-/* RESTAURAR A SESSÃO AO ATUALIZAR A PÁGINA */
-
-/* ASSISTÊNCIA FIXA: ABRIR, ADICIONAR NOMES E SALVAR */
-
-(function () {
-    const botaoAbrir = document.getElementById("abrir-assistencia-fixa");
-    const formulario = document.getElementById("formulario-assistencia-fixa");
-    const form = document.getElementById("form-assistencia-fixa");
-    const listaNomes = document.getElementById("lista-nomes-assistencia-fixa");
-    const botaoAdicionar = document.getElementById("adicionar-pessoa-assistencia-fixa");
-    const mensagem = document.getElementById("mensagem-assistencia-fixa");
-
-    if (!botaoAbrir || !formulario || !form || !listaNomes || !botaoAdicionar || !mensagem) {
-        console.error("Elementos da Assistência Fixa não encontrados.");
-        return;
-    }
-
-    botaoAbrir.addEventListener("click", function () {
-        const vaiAbrir = formulario.hidden;
-
-        formulario.hidden = !vaiAbrir;
-        botaoAbrir.setAttribute("aria-expanded", String(vaiAbrir));
-
-        botaoAbrir.textContent = vaiAbrir
-            ? "− Fechar assistência fixa"
-            : "＋ Registrar assistência fixa";
+    // Abrir/fechar o formulário de assistência fixa.
+    botaoAbrirFixa.addEventListener("click", function () {
+        const abrir = formularioFixa.hidden;
+        formularioFixa.hidden = !abrir;
+        botaoAbrirFixa.setAttribute("aria-expanded", String(abrir));
+        botaoAbrirFixa.textContent = abrir ? "− Fechar assistência fixa" : "＋ Registrar assistência fixa";
     });
 
-    botaoAdicionar.addEventListener("click", function () {
-        const campo = document.createElement("div");
-        campo.className = "campo-nome-assistencia-fixa";
-
+    function adicionarCampoNomeFixo() {
+        const linha = document.createElement("div");
+        linha.className = "campo-nome-assistencia-fixa";
         const input = document.createElement("input");
         input.type = "text";
         input.name = "nomes-assistencia-fixa";
         input.placeholder = "Nome completo";
         input.required = true;
-
-        campo.appendChild(input);
-        listaNomes.appendChild(campo);
+        const remover = document.createElement("button");
+        remover.type = "button";
+        remover.className = "admin-botao admin-botao-secundario";
+        remover.textContent = "Remover";
+        remover.addEventListener("click", () => linha.remove());
+        linha.append(input, remover);
+        listaNomesFixa.appendChild(linha);
         input.focus();
-    });
+    }
 
-    form.addEventListener("submit", async function (evento) {
+    botaoAdicionarFixa.addEventListener("click", adicionarCampoNomeFixo);
+
+    formFixa.addEventListener("submit", async function (evento) {
         evento.preventDefault();
-
-        mensagem.textContent = "Salvando presenças...";
-
+        const acesso = await obterAcesso();
+        if (!acesso) {
+            mensagemFixa.textContent = "Entre na Área de Membros com uma conta aprovada antes de salvar.";
+            return;
+        }
         const data = document.getElementById("assistencia-fixa-data").value;
-
-        const nomes = Array.from(
-            form.querySelectorAll('input[name="nomes-assistencia-fixa"]')
-        )
-            .map(campo => campo.value.trim())
-            .filter(nome => nome !== "");
-
-        if (!data || nomes.length === 0) {
-            mensagem.textContent = "Informe a data da gira e pelo menos um nome.";
-            return;
-        }
-
-        const { data: { user }, error: erroUsuario } =
-            await supabaseClient.auth.getUser();
-
-        if (erroUsuario || !user) {
-            mensagem.textContent = "Entre na Área de Membros antes de salvar.";
-            return;
-        }
+        const nomes = Array.from(formFixa.querySelectorAll('input[name="nomes-assistencia-fixa"]'))
+            .map(campo => campo.value.trim()).filter(Boolean);
+        if (!data) { mensagemFixa.textContent = "Selecione a data da gira."; return; }
+        if (nomes.length === 0) { mensagemFixa.textContent = "Digite pelo menos um nome."; return; }
 
         const registros = nomes.map(nome => ({
             data_assistencia: data,
             nome_completo: nome,
-            criado_por: user.id
+            criado_por: acesso.user.id
         }));
-
-        const { error } = await supabaseClient
-            .from("registros_assistencia_fixa")
-            .insert(registros);
-
+        const botaoSalvar = formFixa.querySelector('button[type="submit"]');
+        if (botaoSalvar) botaoSalvar.disabled = true;
+        mensagemFixa.textContent = "Salvando presenças...";
+        const { error } = await supabaseClient.from("registros_assistencia_fixa").insert(registros);
+        if (botaoSalvar) botaoSalvar.disabled = false;
         if (error) {
             console.error("Erro ao salvar assistência fixa:", error);
-            mensagem.textContent = "Não foi possível salvar. Verifique as permissões.";
+            mensagemFixa.textContent = "Não foi possível salvar. Confira as permissões da tabela registros_assistencia_fixa.";
             return;
         }
 
-        mensagem.textContent = "Presenças salvas com sucesso!";
-
-        form.reset();
-
-        listaNomes.innerHTML = `
-            <div class="campo-nome-assistencia-fixa">
-                <input type="text"
-                    name="nomes-assistencia-fixa"
-                    placeholder="Nome completo"
-                    required>
-            </div>
-        `;
+        formFixa.reset();
+        listaNomesFixa.replaceChildren();
+        adicionarCampoNomeFixo();
+        mensagemFixa.textContent = `${nomes.length} presença(s) salva(s) com sucesso!`;
+        await carregarRegistrosAssistencia();
     });
+
+    if (botaoAtualizar) botaoAtualizar.addEventListener("click", carregarRegistrosAssistencia);
+
+    // Atualiza as pastas quando o painel administrativo for exibido após o login.
+    const painel = document.getElementById("painel-administrativo");
+    if (painel && typeof MutationObserver !== "undefined") {
+        const observador = new MutationObserver(() => {
+            if (!painel.hidden) carregarRegistrosAssistencia();
+        });
+        observador.observe(painel, { attributes: true, attributeFilter: ["hidden"] });
+    }
 })();
+
+
+/* RESTAURAR A SESSÃO AO ATUALIZAR A PÁGINA */
 
 async function restaurarSessaoAdministrativa() {
     mostrarPainelAdministrativo(false);
