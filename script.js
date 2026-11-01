@@ -977,10 +977,16 @@ if (botaoSairAdministracao) {
 
         if (botaoSalvar) botaoSalvar.disabled = false;
         if (resultado.error) {
-            console.error("Erro ao salvar primeira vez:", resultado.error);
-            mensagemPrimeiraVez.textContent = "Não foi possível salvar. Confira as permissões e a estrutura da tabela no Supabase.";
-            return;
-        }
+    console.error("Erro detalhado ao salvar primeira vez:", resultado.error);
+
+    mensagemPrimeiraVez.textContent =
+        "Erro do Supabase: " +
+        (resultado.error.message || "Erro desconhecido") +
+        (resultado.error.details ? " | Detalhes: " + resultado.error.details : "") +
+        (resultado.error.hint ? " | Orientação: " + resultado.error.hint : "");
+
+    return;
+}
 
         const estavaEditando = registroEmEdicao !== null;
         limparEdicaoPrimeiraVez();
