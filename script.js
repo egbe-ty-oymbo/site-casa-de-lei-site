@@ -853,9 +853,17 @@ if (botaoSairAdministracao) {
         }
 
         const [primeira, fixa] = await Promise.all([
-            supabaseClient.from("registros_assistencia").select("*").order("data_assistencia", { ascending: false }).order("created_at", { ascending: false }),
-            supabaseClient.from("registros_assistencia_fixa").select("id, data_assistencia, nome_completo, criado_por, criado_em").order("data_assistencia", { ascending: false }).order("criado_em", { ascending: false })
-        ]);
+    supabaseClient
+        .from("registros_assistencia")
+        .select("*")
+        .order("data_assistencia", { ascending: false }),
+
+    supabaseClient
+        .from("registros_assistencia_fixa")
+        .select("id, data_assistencia, nome_completo, criado_por, criado_em")
+        .order("data_assistencia", { ascending: false })
+        .order("criado_em", { ascending: false })
+]);
 
         if (primeira.error) console.error("Erro ao consultar primeira vez:", primeira.error);
         if (fixa.error) console.error("Erro ao consultar assistência fixa:", fixa.error);
