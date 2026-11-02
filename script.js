@@ -1054,61 +1054,82 @@ if (botaoSairAdministracao) {
 })();
 
 
-/* ==================================================== */
-/* ENVIO E GESTÃO SEGURA DAS FICHAS CADASTRAIS DOS FILHOS */
-/* ==================================================== */
+// 2. Consulta Protegida por Senha das Fichas na Secretaria
+    const botaoLiberarFichas = document.getElementById("botao-liberar-fichas");
+    const senhaAdminFichas = document.getElementById("senha-admin-fichas");
+    const mensagemSenhaFichas = document.getElementById("mensagem-senha-fichas");
+    const conteudoFichasRestrito = document.getElementById("conteudo-fichas-restrito");
+    const listaFichasFilhos = document.getElementById("lista-fichas-filhos");
+    const botaoAtualizarFichas = document.getElementById("atualizar-fichas-filhos");
 
-document.addEventListener("DOMContentLoaded", function () {
+    const SENHA_SECRETA_FICHAS = "casadelei2026";
 
-    // 1. Envio do Formulário pelos Filhos
-    const formFichaFilho = document.getElementById("form-ficha-filho");
-    const mensagemFichaFilho = document.getElementById("mensagem-ficha-filho");
+    async function carregarFichasFilhos() {
+        if (!listaFichasFilhos) return;
 
-    if (formFichaFilho) {
-        formFichaFilho.addEventListener("submit", async function (e) {
-            e.preventDefault();
+        listaFichasFilhos.textContent = "Carregando fichas...";
 
-            if (mensagemFichaFilho) {
-                mensagemFichaFilho.textContent = "Enviando sua ficha...";
-                mensagemFichaFilho.style.color = "#333";
-            }
+        const { data, error } = await supabaseClient
+            .from("fichas_cadastrais_filhos")
+            .select("*")
+            .order("created_at", { ascending: false });
 
-            const dadosFicha = {
-                nome_completo: document.getElementById("ficha-nome").value.trim(),
-                email: document.getElementById("ficha-email").value.trim(),
-                telefone: document.getElementById("ficha-telefone").value.trim(),
-                rg: document.getElementById("ficha-rg").value.trim(),
-                cpf: document.getElementById("ficha-cpf").value.trim(),
-                data_nascimento: document.getElementById("ficha-nascimento").value,
-                endereco: document.getElementById("ficha-endereco").value.trim(),
-                contato_emergencia: document.getElementById("ficha-emergencia").value.trim(),
-                tem_filhos: document.getElementById("ficha-tem-filhos").value,
-                quantidade_filhos: document.getElementById("ficha-qtd-filhos").value.trim(),
-                consome_alcool: document.getElementById("ficha-alcool").value,
-                consome_cigarro: document.getElementById("ficha-cigarro").value,
-                usa_remedio_controlado: document.getElementById("ficha-remedios").value.trim(),
-                alergias: document.getElementById("ficha-alergias").value.trim()
-            };
+        if (error) {
+            console.error("Erro ao buscar fichas:", error.message);
+            listaFichasFilhos.textContent = "Erro ao carregar fichas: " + error.message;
+            return;
+        }
 
-            const { error } = await supabaseClient
-                .from("fichas_cadastrais_filhos")
-                .insert([dadosFicha]);
+        if (!data || data.length === 0) {
+            listaFichasFilhos.textContent = "Nenhuma ficha cadastrada até o momento.";
+            return;
+        }
 
-            if (error) {
-                console.error("Erro ao enviar ficha:", error.message);
-                if (mensagemFichaFilho) {
-                    mensagemFichaFilho.textContent = "Erro ao enviar: " + error.message;
-                    mensagemFichaFilho.style.color = "red";
+        // Monta a listagem bonita na tela com os dados
+        let html = "<div style='display: flex; flex-direction: column; gap: 15px;'>";
+        data.forEach((ficha, index) => {
+            html += `
+                <div style='background: #fff; padding: 15px; border: 1px solid #ccc; border-radius: 6px;'>
+                    <strong>#${index + 1} - ${ficha.nome_completo || "Sem nome"}</strong><br>
+                    <strong>E-mail:</strong> ${ficha.email || "Não informado"} | <strong>Telefone:</strong> ${ficha.telefone || "Não informado"}<br>
+                    <strong>RG:</strong> ${ficha.rg} | <strong>CPF:</strong> ${ficha.cpf} | <strong>Nascimento:</strong> ${ficha.data_nascimento}<br>
+                    <strong>Endereço:</strong> ${ficha.endereco}<br>
+                    <strong>Contato de Emergência:</strong> ${ficha.contato_emergencia}<br>
+                    <strong>Tem Filhos:</strong> ${ficha.tem_filhos} (${ficha.quantidade_filhos || "Nenhum"})<br>
+                    <strong>Álcool:</strong> ${ficha.consome_alcool} | <strong>Cigarro:</strong> ${ficha.consome_cigarro}<br>
+                    <strong>Remédios Controlados:</strong> ${ficha.usa_remedio_controlado || "Nenhum"}<br>
+                    <strong>Alergias:</strong> ${ficha.alergias || "Nenhuma"}
+                </div>
+            `;
+        });
+        html += "</div>";
+
+        listaFichasFilhos.innerHTML = html;
+    }
+
+    if (botaoLiberarFichas && senhaAdminFichas) {
+        botaoLiberarFichas.addEventListener("click", function () {
+            const senhaDigitada = senhaAdminFichas.value.trim();
+
+            if (senhaDigitada !== SENHA_SECRETA_FICHAS) {
+                if (mensagemSenhaFichas) {
+                    mensagemSenhaFichas.textContent = "Senha incorreta. Acesso negado.";
+                    mensagemSenhaFichas.style.color = "red";
                 }
+                if (conteudoFichasRestrito) conteudoFichasRestrito.hidden = true;
                 return;
             }
 
-            if (mensagemFichaFilho) {
-                mensagemFichaFilho.textContent = "Ficha cadastral enviada com sucesso! Obrigado.";
-                mensagemFichaFilho.style.color = "green";
+            if (mensagemSenhaFichas) {
+                mensagemSenhaFichas.textContent = "Acesso autorizado!";
+                mensagemSenhaFichas.style.color = "green";
             }
-            formFichaFilho.reset();
+            if (conteudoFichasRestrito) conteudoFichasRestrito.hidden = false;
+
+            carregarFichasFilhos();
         });
     }
 
-});
+    if (botaoAtualizarFichas) {
+        botaoAtualizarFichas.addEventListener("click", carregarFichasFilhos);
+    }
