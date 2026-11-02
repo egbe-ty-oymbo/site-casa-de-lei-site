@@ -711,7 +711,6 @@ if (botaoSairAdministracao) {
         formPrimeiraVez.elements["data_assistencia"].value = pessoa.data_assistencia || "";
         formPrimeiraVez.elements["gira"].value = pessoa.gira || "";
         formPrimeiraVez.elements["responsavel"].value = pessoa.responsavel_recepcao || "";
-        // CORRIGIDO: usando nome_completo para refletir o banco de dados
         formPrimeiraVez.elements["nome"].value = pessoa.nome_completo || "";
         formPrimeiraVez.elements["email"].value = pessoa.email || "";
         formPrimeiraVez.elements["telefone"].value = pessoa.telefone || "";
@@ -747,7 +746,6 @@ if (botaoSairAdministracao) {
             if (tipo === "primeira") {
                 const item = document.createElement("details");
                 const nome = document.createElement("summary");
-                // CORRIGIDO: alterado de pessoa.nome para pessoa.nome_completo
                 nome.textContent = pessoa.nome_completo || "Visitante sem nome";
                 const conteudo = document.createElement("div");
                 conteudo.style.whiteSpace = "pre-wrap";
@@ -775,7 +773,6 @@ if (botaoSairAdministracao) {
                     acoes.append(
                         criarBotao("✏️ Editar", () => iniciarEdicaoPrimeiraVez(pessoa)),
                         criarBotao("🗑️ Excluir", async () => {
-                            // CORRIGIDO: alterado para nome_completo
                             if (!confirm(`Excluir o cadastro de ${pessoa.nome_completo || "visitante"}?`)) return;
                             const { error } = await supabaseClient
                                 .from("registros_assistencia")
@@ -894,9 +891,7 @@ if (botaoSairAdministracao) {
 
         grupos.forEach((valor, data) => {
             const tituloPasta = dataExibicao(data);
-            const pasta = criarPastaRegistros(tituloPasta, [...valor.primeira, ...valor.fixa], "grupo", acesso);
             
-            // Separando visualmente por subpastas ou exibindo juntas
             const containerData = document.createElement("details");
             const resumoData = document.createElement("summary");
             resumoData.textContent = `📅 ${tituloPasta} (${valor.primeira.length + valor.fixa.length} pessoas)`;
@@ -908,6 +903,7 @@ if (botaoSairAdministracao) {
             if (valor.fixa.length > 0) {
                 containerData.appendChild(criarPastaRegistros("Assistência fixa", valor.fixa, "fixa", acesso));
             }
+
             lista.appendChild(containerData);
         });
     }
@@ -928,7 +924,6 @@ if (botaoSairAdministracao) {
             data_assistencia: valorCampo("data_assistencia"),
             gira: valorCampo("gira"),
             responsavel_recepcao: valorCampo("responsavel"),
-            // CORRIGIDO: salvando no banco usando a coluna nome_completo
             nome_completo: valorCampo("nome"),
             email: valorCampo("email"),
             telefone: valorCampo("telefone"),
