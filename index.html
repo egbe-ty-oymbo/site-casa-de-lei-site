@@ -10,8 +10,8 @@
 
 <header>
     <img
-        src="imagens/brasao.png"
-        alt="Brasão oficial da Casa de Lei"
+        src="brasao.png"
+        alt="Brasao oficial da Casa de Lei"
         class="brasao"
     >
 
@@ -36,365 +36,19 @@
 
 <nav class="menu menu-fechado" id="menu-principal">
     <a href="#inicio"><span class="icone-menu">⌂</span><span>Início</span></a>
-    <a href="#guia-visita"><span class="icone-menu">ℹ</span><span>Guia de Visita</span></a>
     <a href="#historia"><span class="icone-menu">✧</span><span>Nossa História</span></a>
     <a href="#umbanda"><span class="icone-menu">☼</span><span>Conheça a Umbanda</span></a>
     <a href="#calendario"><span class="icone-menu">▦</span><span>Calendário de Giras</span></a>
     <a href="#agenda"><span class="icone-menu">☯</span><span>Jogo de Búzios</span></a>
     <a href="#galeria"><span class="icone-menu">▧</span><span>Galeria</span></a>
     <a href="#contato"><span class="icone-menu">✉</span><span>Contato</span></a>
-    <a href="#area-membros"><span class="icone-menu">♙</span><span>Área de Membros</span></a>
+    <a href="#cadastro-filhos"><span class="icone-menu">📋</span><span>Ficha Cadastral</span></a>
     <a href="#doacao"><span class="icone-menu">♡</span><span>Faça sua Doação</span></a>
 </nav>
 
 <main>
 
-    <!-- ÁREA DE MEMBROS -->
-    <section id="area-membros" class="secao-recolhivel">
-        <button
-            type="button"
-            class="titulo-recolhivel"
-            aria-expanded="false"
-            aria-controls="conteudo-area-membros">
-
-            <span>
-                <span class="subtitulo">ACESSO RESTRITO</span>
-                <span class="texto-titulo">Área de Membros</span>
-            </span>
-
-            <span class="sinal-recolher" aria-hidden="true">＋</span>
-        </button>
-
-        <div id="conteudo-area-membros" class="conteudo-recolhivel" hidden>
-            <p>Acesso restrito aos membros autorizados da Casa de Lei.</p>
-
-            <form id="form-login-membros">
-                <label for="email-membro">E-mail</label>
-                <input
-                    type="email"
-                    id="email-membro"
-                    autocomplete="username"
-                    required
-                >
-
-                <label for="senha-membro">Senha</label>
-                <input
-                    type="password"
-                    id="senha-membro"
-                    autocomplete="current-password"
-                    required
-                >
-
-                <button type="submit">Entrar</button>
-                <p id="mensagem-login" role="status"></p>
-            </form>
-        </div>
-    </section>
-
-    <!-- PAINEL ADMINISTRATIVO -->
-    <section id="painel-administrativo" hidden>
-        <div class="admin-cabecalho">
-            <span class="admin-etiqueta">CASA DE LEI</span>
-            <h2>Painel Administrativo</h2>
-            <p>Gerencie os materiais e acompanhe as necessidades da casa.</p>
-        </div>
-
-        <div class="admin-cartao">
-            <div class="admin-titulo-secao">
-                <span class="admin-icone">＋</span>
-                <div>
-                    <h3>Cadastrar material</h3>
-                    <p>Preencha os dados do material abaixo.</p>
-                </div>
-            </div>
-
-            <div class="admin-formulario">
-                <div class="admin-campo">
-                    <label for="material-item">Nome do material</label>
-                    <input type="text" id="material-item" placeholder="Ex.: Velas">
-                </div>
-
-                <div class="admin-campo">
-                    <label for="material-quantidade">Quantidade</label>
-                    <input type="text" id="material-quantidade" placeholder="Ex.: 20 unidades">
-                </div>
-
-                <div class="admin-campo">
-                    <label for="material-categoria">Categoria</label>
-                    <input type="text" id="material-categoria" placeholder="Ex.: Material religioso">
-                </div>
-
-                <div class="admin-campo">
-                    <label for="material-status">Situação</label>
-                    <select id="material-status">
-                        <option value="Pendente">Pendente</option>
-                        <option value="Resolvido">Resolvido</option>
-                    </select>
-                </div>
-
-                <div class="admin-campo admin-campo-completo">
-                    <label for="material-observacao">Observações</label>
-                    <textarea id="material-observacao" placeholder="Informações adicionais"></textarea>
-                </div>
-            </div>
-
-            <button type="button" id="cadastrar-material" class="admin-botao admin-botao-principal">
-                Cadastrar material
-            </button>
-
-            <p id="mensagem-materiais" role="status"></p>
-        </div>
-
-        <div class="admin-cartao admin-cartao-lista">
-            <div class="admin-lista-cabecalho">
-                <div class="admin-titulo-secao">
-                    <span class="admin-icone">▤</span>
-                    <div>
-                        <h3>Materiais cadastrados</h3>
-                        <p>Consulte e gerencie os materiais da casa.</p>
-                    </div>
-                </div>
-
-                <button type="button" id="atualizar-materiais" class="admin-botao admin-botao-secundario">
-                    ↻ Atualizar lista
-                </button>
-            </div>
-
-            <div id="lista-materiais"></div>
-        </div>
-
-        
-
-
-<!-- REGISTRO DA ASSISTÊNCIA: PRIMEIRA VEZ E ASSISTÊNCIA FIXA -->
-<div class="admin-cartao assistencia-admin-cartao">
-    <div class="admin-titulo-secao">
-        <span class="admin-icone">▣</span>
-        <div>
-            <h3>Registro da Assistência</h3>
-            <p>Os registros ficam organizados pela data da gira.</p>
-        </div>
-    </div>
-
-    <!-- PRIMEIRA VEZ -->
-    <div class="admin-cartao">
-        <h3>Assistência de primeira vez</h3>
-        <p>Cadastro completo de quem está visitando a casa pela primeira vez.</p>
-
-        <button type="button" id="abrir-registro-assistencia"
-            class="admin-botao admin-botao-secundario"
-            aria-expanded="false" aria-controls="formulario-registro-assistencia">
-            ＋ Registrar assistência de primeira vez
-        </button>
-
-        <div id="formulario-registro-assistencia" hidden>
-            <form id="form-registro-assistencia">
-                <div class="admin-formulario">
-
-                    <div class="admin-campo">
-                        <label for="assistencia-data">Data da gira *</label>
-                        <input type="date" id="assistencia-data" name="data_assistencia" required>
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="assistencia-gira">Gira frequentada *</label>
-                        <input type="text" id="assistencia-gira" name="gira"
-                            placeholder="Ex.: Gira de Caboclos" required>
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="assistencia-responsavel">Responsável pela recepção *</label>
-                        <input type="text" id="assistencia-responsavel" name="responsavel"
-                            placeholder="Nome de quem recebeu" required>
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="assistencia-nome">Nome completo *</label>
-                        <input type="text" id="assistencia-nome" name="nome"
-                            autocomplete="name" required>
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="assistencia-email">E-mail</label>
-                        <input type="email" id="assistencia-email" name="email"
-                            autocomplete="email">
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="assistencia-telefone">Telefone / WhatsApp</label>
-                        <input type="tel" id="assistencia-telefone" name="telefone"
-                            autocomplete="tel" placeholder="(11) 99999-9999">
-                    </div>
-
-                    <div class="admin-campo admin-campo-completo">
-                        <label for="assistencia-endereco">Endereço</label>
-                        <input type="text" id="assistencia-endereco" name="endereco"
-                            autocomplete="street-address"
-                            placeholder="Rua, número, bairro e cidade">
-                    </div>
-
-                    <div class="admin-campo admin-campo-completo">
-                        <label>Como conheceu a casa? (pode selecionar mais de uma opção)</label>
-                        <div class="assistencia-opcoes">
-                            <label><input type="checkbox" name="assistencia-origem" value="Indicação"> Indicação</label>
-                            <label><input type="checkbox" name="assistencia-origem" value="Google"> Google</label>
-                            <label><input type="checkbox" name="assistencia-origem" value="Instagram"> Instagram</label>
-                            <label><input type="checkbox" name="assistencia-origem" value="Facebook"> Facebook</label>
-                            <label><input type="checkbox" name="assistencia-origem" value="Passou em frente à casa"> Passou em frente à casa</label>
-                            <label><input type="checkbox" name="assistencia-origem" value="Outro"> Outro</label>
-                        </div>
-                    </div>
-
-                    <div class="admin-campo admin-campo-completo">
-                        <label for="assistencia-origem-detalhes">
-                            Se foi indicação ou marcou “Outro”, informe os detalhes
-                        </label>
-                        <input type="text" id="assistencia-origem-detalhes"
-                            name="detalhe-origem"
-                            placeholder="Nome da pessoa ou outra origem">
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="assistencia-terreiro">Já frequenta outro terreiro? *</label>
-                        <select id="assistencia-terreiro" name="frequenta-terreiro" required>
-                            <option value="">Selecione</option>
-                            <option value="Sim">Sim</option>
-                            <option value="Não">Não</option>
-                        </select>
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="assistencia-grupo">
-                            Deseja participar do grupo da assistência? *
-                        </label>
-                        <select id="assistencia-grupo" name="deseja-grupo" required>
-                            <option value="">Selecione</option>
-                            <option value="Sim">Sim</option>
-                            <option value="Não">Não</option>
-                        </select>
-                    </div>
-
-                    <div class="admin-campo admin-campo-completo">
-                        <label>Motivo da visita (pode selecionar mais de uma opção)</label>
-                        <div class="assistencia-opcoes">
-                            <label><input type="checkbox" name="assistencia-motivo" value="Saúde"> Saúde</label>
-                            <label><input type="checkbox" name="assistencia-motivo" value="Amor / relacionamento"> Amor / relacionamento</label>
-                            <label><input type="checkbox" name="assistencia-motivo" value="Financeiro"> Financeiro</label>
-                            <label><input type="checkbox" name="assistencia-motivo" value="Emprego"> Emprego</label>
-                            <label><input type="checkbox" name="assistencia-motivo" value="Pessoal / familiar"> Pessoal / familiar</label>
-                            <label><input type="checkbox" name="assistencia-motivo" value="Curiosidade / conhecer a casa"> Curiosidade / conhecer a casa</label>
-                            <label><input type="checkbox" name="assistencia-motivo" value="Espiritual"> Espiritual</label>
-                            <label><input type="checkbox" name="assistencia-motivo" value="Outro"> Outro</label>
-                        </div>
-                    </div>
-
-                    <div class="admin-campo admin-campo-completo">
-                        <label for="assistencia-motivo-outro">
-                            Se marcou “Outro”, especifique
-                        </label>
-                        <input type="text" id="assistencia-motivo-outro"
-                            name="motivo-outro"
-                            placeholder="Outro motivo, se necessário">
-                    </div>
-
-                    <div class="admin-campo admin-campo-completo">
-                        <label for="assistencia-observacoes">
-                            Observações necessárias para o acolhimento (opcional)
-                        </label>
-                        <textarea id="assistencia-observacoes" name="observacoes"
-                            rows="3"
-                            placeholder="Registre somente informações necessárias."></textarea>
-                    </div>
-                </div>
-
-                <button type="submit"
-                    class="admin-botao admin-botao-principal">
-                    Salvar registro
-                </button>
-
-                <p id="mensagem-registro-assistencia"
-                    role="status" aria-live="polite"></p>
-            </form>
-        </div>
-    </div>
-
-    <!-- ASSISTÊNCIA FIXA -->
-    <div class="admin-cartao">
-        <h3>Assistência fixa</h3>
-        <p>Registro de presença das pessoas que já frequentam a casa.</p>
-
-        <button type="button" id="abrir-assistencia-fixa"
-            class="admin-botao admin-botao-secundario"
-            aria-expanded="false" aria-controls="formulario-assistencia-fixa">
-            ＋ Registrar assistência fixa
-        </button>
-
-        <div id="formulario-assistencia-fixa" hidden>
-            <form id="form-assistencia-fixa">
-                <div class="admin-formulario">
-
-                    <div class="admin-campo">
-                        <label for="assistencia-fixa-data">Data da gira *</label>
-                        <input type="date" id="assistencia-fixa-data"
-                            name="data-assistencia" required>
-                    </div>
-
-                    <div class="admin-campo admin-campo-completo">
-                        <label>Nome das pessoas presentes *</label>
-                        <div id="lista-nomes-assistencia-fixa">
-                            <div class="campo-nome-assistencia-fixa">
-                                <input type="text"
-                                    name="nomes-assistencia-fixa"
-                                    placeholder="Nome completo" required>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <button type="button"
-                    id="adicionar-pessoa-assistencia-fixa"
-                    class="admin-botao admin-botao-secundario">
-                    ＋ Adicionar pessoa
-                </button>
-
-                <button type="submit"
-                    class="admin-botao admin-botao-principal">
-                    Salvar presenças
-                </button>
-
-                <p id="mensagem-assistencia-fixa"
-                    role="status" aria-live="polite"></p>
-            </form>
-        </div>
-    </div>
-
-    <!-- LISTAGEM CONJUNTA POR DATA -->
-    <div class="admin-cartao admin-cartao-lista">
-        <div class="admin-lista-cabecalho">
-            <div class="admin-titulo-secao">
-                <span class="admin-icone">▤</span>
-                <div>
-                    <h3>Registros por data</h3>
-                    <p>Dentro de cada data, os cadastros ficam separados por categoria.</p>
-                </div>
-            </div>
-
-            <button type="button"
-                id="atualizar-registros-assistencia"
-                class="admin-botao admin-botao-secundario">
-                ↻ Atualizar lista
-            </button>
-        </div>
-
-        <div id="lista-registros-assistencia"></div>
-    </div>
-</div>
-
-</section>
-
-<!-- INÍCIO -->
-
-    
+    <!-- INÍCIO -->
     <section id="inicio" class="boas-vindas">
         <p class="subtitulo">UM CAMINHO DE FÉ, AMOR E CARIDADE</p>
 
@@ -414,136 +68,6 @@
         <a href="#historia" class="botao-principal">
             Conheça nossa história
         </a>
-    </section>
-
-    <!-- GUIA DE VISITA -->
-    <section id="guia-visita" class="secao-recolhivel">
-        <button
-            type="button"
-            class="titulo-recolhivel"
-            aria-expanded="false"
-            aria-controls="conteudo-guia-visita">
-
-            <span>
-                <span class="subtitulo">SEJA BEM-VINDO(A) À NOSSA CASA</span>
-                <span class="texto-titulo">Guia de Visita: Orientações para a Assistência</span>
-            </span>
-
-            <span class="sinal-recolher" aria-hidden="true">＋</span>
-        </button>
-
-        <div id="conteudo-guia-visita" class="conteudo-recolhivel" hidden>
-            <p class="subtitulo" style="color: #b18a38; font-weight: bold; margin-bottom: 15px;">CASA DE LEI MÃE IEMANJÁ E PAI BENEDITO DAS ALMAS</p>
-            
-            <p>
-                <strong>Sejam muito bem-vindos à nossa casa!</strong><br>
-                É com muita alegria que recebemos você em nossa Casa de Lei! Que sua chegada seja acolhida com carinho, respeito, paz e boas energias.
-            </p>
-            <p>
-                Se esta é a sua primeira vez em um terreiro de Umbanda, fique tranquilo(a). Sabemos que conhecer um novo espaço religioso pode trazer dúvidas e curiosidades. Por isso, preparamos este guia para ajudar você a compreender o funcionamento da nossa casa e saber como participar de nossas giras.
-            </p>
-            <p>
-                A Umbanda é uma religião que valoriza a caridade, a fé, o amor, a humildade e o respeito. Aqui, cada pessoa é recebida com acolhimento, independentemente de sua história ou de seu conhecimento sobre a religião. Pedimos apenas que você venha de coração aberto, com respeito e disposição para vivenciar esse momento.
-            </p>
-            <p style="margin-bottom: 25px;">
-                <em>Sinta-se acolhido(a). Esta casa recebe você com carinho!</em>
-            </p>
-
-            <h3 style="color: #173b59; margin-top: 20px;">1. Horário de funcionamento</h3>
-            <p>
-                Nossas giras têm início a partir das 18h. Pedimos que você se organize para chegar com antecedência, sempre que possível, para entrar com tranquilidade, receber as orientações necessárias e se preparar para o início dos trabalhos. Em caso de dúvidas sobre datas, horários específicos ou programação das giras, consulte os avisos oficiais da Casa de Lei.
-            </p>
-
-            <h3 style="color: #173b59; margin-top: 20px;">2. Como se vestir</h3>
-            <p>Para participar de nossas giras, recomendamos roupas confortáveis, discretas e de cores claras. Pedimos que evite:</p>
-            <ul style="margin-left: 20px; margin-bottom: 15px; line-height: 1.8;">
-                <li>Roupas muito curtas;</li>
-                <li>Decotes acentuados;</li>
-                <li>Roupas transparentes;</li>
-                <li>Vestimentas que possam causar desconforto durante a permanência na casa.</li>
-            </ul>
-            <p>
-                O objetivo não é julgar a maneira como cada pessoa se veste, mas preservar um ambiente de respeito, acolhimento e harmonia, adequado aos trabalhos espirituais.
-            </p>
-
-            <h3 style="color: #173b59; margin-top: 20px;">3. Respeito ao solo sagrado</h3>
-            <p>
-                Ao entrar no espaço destinado ao atendimento espiritual, seja para receber um passe ou participar de uma consulta com as entidades, pedimos que retire os calçados e permaneça descalço(a), conforme a orientação da nossa casa. Esse gesto representa respeito ao chão e ao solo sagrado do terreiro. Caso tenha alguma necessidade física que dificulte permanecer descalço(a), procure a organização da casa para receber orientação.
-            </p>
-
-            <h3 style="color: #173b59; margin-top: 20px;">4. Silêncio, respeito e uso do celular</h3>
-            <p>Durante os trabalhos espirituais, pedimos a colaboração de todos para manter um ambiente tranquilo e respeitoso:</p>
-            <ul style="margin-left: 20px; margin-bottom: 15px; line-height: 1.8;">
-                <li>Evite conversas paralelas e fale em tom baixo quando necessário.</li>
-                <li>Mantenha o celular no modo silencioso.</li>
-                <li>Evite atender ligações durante a gira.</li>
-                <li>Respeite os momentos de oração, os pontos cantados, a defumação e as orientações dos dirigentes e médiuns.</li>
-                <li>Não são permitidas fotografias ou filmagens durante os trabalhos, preservando a privacidade e o respeito de todos os presentes.</li>
-            </ul>
-            <p>Se precisar de ajuda ou tiver alguma dúvida, procure alguém responsável pela recepção ou pela organização da casa.</p>
-
-            <h3 style="color: #173b59; margin-top: 20px;">5. Como funciona o atendimento espiritual</h3>
-            <p>Para que você compreenda melhor o funcionamento da gira, apresentamos as etapas habituais dos nossos trabalhos:</p>
-            <ul style="margin-left: 20px; margin-bottom: 15px; line-height: 1.8;">
-                <li><strong>Abertura da gira:</strong> momento de preparação espiritual, orações e início dos trabalhos conduzidos pela casa.</li>
-                <li><strong>Defumação:</strong> prática tradicional de harmonização e preparação do ambiente para os trabalhos espirituais.</li>
-                <li><strong>Passe:</strong> momento em que a pessoa recebe o passe, conforme a organização e as orientações da casa.</li>
-                <li><strong>Café:</strong> após os passes, temos o momento do café, destinado à convivência e à partilha, conforme a organização do dia.</li>
-                <li><strong>Consultas com as entidades:</strong> momento de escuta e orientação espiritual, respeitando a ordem de atendimento e as orientações dos responsáveis pela gira.</li>
-            </ul>
-            <p>A sequência e a duração de cada etapa podem variar conforme a programação e as necessidades dos trabalhos. Por isso, pedimos que todos acompanhem as orientações transmitidas durante a gira.</p>
-
-            <h3 style="color: #173b59; margin-top: 20px;">6. Crianças e adolescentes</h3>
-            <p>As crianças são bem-vindas à nossa casa. Para que todos possam participar dos trabalhos com tranquilidade, contamos com a colaboração dos pais e responsáveis:</p>
-            <ul style="margin-left: 20px; margin-bottom: 15px; line-height: 1.8;">
-                <li>As crianças permaneçam acompanhadas por seus responsáveis.</li>
-                <li>Os responsáveis orientem as crianças sobre o respeito ao espaço religioso e aos momentos de silêncio.</li>
-                <li>Evitem que corram ou circulem desacompanhadas pelas áreas de atendimento.</li>
-                <li>Em caso de necessidade, procurem a organização da casa para receber auxílio.</li>
-            </ul>
-            <p>Nosso objetivo é acolher as famílias e preservar um ambiente seguro, tranquilo e respeitoso para todos.</p>
-
-            <h3 style="color: #173b59; margin-top: 20px;">7. Respeito às entidades, aos médiuns e aos demais visitantes</h3>
-            <p>
-                Durante a gira, pedimos respeito às entidades espirituais, aos médiuns, aos dirigentes e a todas as pessoas presentes. Cada pessoa vive sua experiência espiritual de maneira particular. Por isso, evite julgamentos, comentários ou atitudes que possam constranger alguém. Durante os passes e as consultas, aguarde sua vez e siga as orientações recebidas. Caso não compreenda alguma instrução, pergunte com tranquilidade a alguém responsável pela casa.
-            </p>
-
-            <h3 style="color: #173b59; margin-top: 20px;">8. Durante as consultas espirituais</h3>
-            <p>As consultas são momentos de acolhimento, escuta e orientação espiritual. Pedimos que você:</p>
-            <ul style="margin-left: 20px; margin-bottom: 15px; line-height: 1.8;">
-                <li>Aguarde sua vez com paciência.</li>
-                <li>Respeite a privacidade das outras pessoas.</li>
-                <li>Evite interromper o atendimento de outra pessoa.</li>
-                <li>Escute as orientações com respeito e tranquilidade.</li>
-            </ul>
-            <p>Se tiver alguma dúvida sobre como proceder, nossa equipe estará disponível para orientar você.</p>
-
-            <h3 style="color: #173b59; margin-top: 20px;">9. Cuide do nosso espaço</h3>
-            <p>Pedimos que todos colaborem para manter a casa limpa, organizada e harmoniosa:</p>
-            <ul style="margin-left: 20px; margin-bottom: 15px; line-height: 1.8;">
-                <li>Utilize lixeiras quando disponíveis.</li>
-                <li>Preserve os objetos, imagens, altares e demais elementos da casa.</li>
-                <li>Não toque em objetos ou materiais ritualísticos sem autorização.</li>
-                <li>Respeite as áreas restritas aos médiuns e à organização.</li>
-                <li>Siga as orientações sobre circulação e permanência nos diferentes espaços do terreiro.</li>
-            </ul>
-            <p>Cada gesto de cuidado contribui para preservar este espaço de fé e caridade.</p>
-
-            <h3 style="color: #173b59; margin-top: 20px;">10. Antes de ir embora</h3>
-            <p>
-                Ao final de sua participação, agradecemos por sua presença e pedimos que siga as orientações da organização para a saída e o encerramento dos trabalhos. Se esta foi sua primeira visita, esperamos que você tenha se sentido acolhido(a) e que tenha encontrado um ambiente de respeito, paz e fraternidade. Seja sempre bem-vindo(a) à nossa Casa de Lei!
-            </p>
-
-            <div style="margin-top: 30px; padding: 20px; background: #f8f6f0; border-left: 3px solid #c6a45b; border-radius: 6px;">
-                <h4 style="color: #173b59; margin-bottom: 8px;">Uma mensagem final</h4>
-                <p style="margin: 0; font-style: italic;">
-                    Que Mãe Iemanjá cubra seus caminhos com suas águas de amor e proteção, e que Pai Benedito das Almas lhe conceda sabedoria, serenidade e humildade para seguir sua caminhada. Que a fé, a caridade e o amor ao próximo estejam sempre presentes em nossos corações.
-                </p>
-                <p style="margin-top: 10px; font-weight: bold; color: #173b59;">
-                    A Casa de Lei Mãe Iemanjá e Pai Benedito das Almas agradece sua visita. Axé!
-                </p>
-            </div>
-        </div>
     </section>
 
     <!-- NOSSA HISTÓRIA -->
@@ -722,47 +246,47 @@
                         </div>
                     </div>
 
-                    <div class="evento-gira">
+                    <div class="evento-gira evento-aberto">
                         <div class="data-gira">
                             <strong>07</strong>
                             <span>SÁB</span>
                         </div>
                         <div class="detalhes-gira">
-                            <h4>Gira de Esquerda</h4>
-                            <p>Portões abertos às 18h</p>
+                            <h4>Programação em aberto</h4>
+                            <p>Gira a definir</p>
                         </div>
                     </div>
 
-                    <div class="evento-gira">
+                    <div class="evento-gira evento-aberto">
                         <div class="data-gira">
                             <strong>14</strong>
                             <span>SÁB</span>
                         </div>
                         <div class="detalhes-gira">
-                            <h4>Gira de Esquerda</h4>
-                            <p>Portões abertos às 18h</p>
+                            <h4>Programação em aberto</h4>
+                            <p>Gira a definir</p>
                         </div>
                     </div>
 
-                    <div class="evento-gira">
+                    <div class="evento-gira evento-aberto">
                         <div class="data-gira">
                             <strong>21</strong>
                             <span>SÁB</span>
                         </div>
                         <div class="detalhes-gira">
-                            <h4>Gira de Esquerda</h4>
-                            <p>Portões abertos às 18h</p>
+                            <h4>Programação em aberto</h4>
+                            <p>Gira a definir</p>
                         </div>
                     </div>
 
-                    <div class="evento-gira">
+                    <div class="evento-gira evento-aberto">
                         <div class="data-gira">
                             <strong>28</strong>
                             <span>SÁB</span>
                         </div>
                         <div class="detalhes-gira">
-                            <h4>Gira de Esquerda</h4>
-                            <p>Portões abertos às 18h</p>
+                            <h4>Programação em aberto</h4>
+                            <p>Gira a definir</p>
                         </div>
                     </div>
                 </article>
@@ -880,7 +404,7 @@
 
                         <p><strong>Duração:</strong> 1 hora</p>
 
-                        <p><strong>Valor:</strong> R$ 150,00</p>
+                        <p><strong>Valor:</strong> R$ 100,00</p>
                     </div>
                 </div>
 
@@ -909,7 +433,7 @@
 
                     <div class="pagamento-pix">
                         <h3>Pagamento via Pix</h3>
-                        <p><strong>Valor: R$ 150,00</strong></p>
+                        <p><strong>Valor: R$ 100,00</strong></p>
                         <p>Chave Pix (celular):</p>
 
                         <p class="chave-pix">
@@ -1023,10 +547,12 @@
                         valor para ajudar nas necessidades da Casa de Lei.
                     </p>
 
-                    <div class="pix-chave">
-                        <strong>Chave Pix — Telefone</strong>
-                        <span>+55 (11) 95848-3252</span>
-                    </div>
+                    
+<div class="pix-chave">
+    <strong>Chave Pix — Telefone</strong>
+    <span>+55 (11) 95848-3252</span>
+</div>
+
 
                     <p>
                         Estamos confirmando os dados da chave Pix para
@@ -1141,6 +667,120 @@
         </div>
     </section>
 
+    <!-- FICHA CADASTRAL E DE SAÚDE DOS FILHOS -->
+    <section id="cadastro-filhos" class="secao-recolhivel">
+        <button
+            type="button"
+            class="titulo-recolhivel"
+            aria-expanded="false"
+            aria-controls="conteudo-cadastro-filhos">
+            <span>
+                <span class="subtitulo">SECRETARIA DA CASA</span>
+                <span class="texto-titulo">Ficha Cadastral e de Saúde</span>
+            </span>
+            <span class="sinal-recolher" aria-hidden="true">＋</span>
+        </button>
+
+        <div id="conteudo-cadastro-filhos" class="conteudo-recolhivel" hidden>
+            <p>Preencha os seus dados cadastrais e de saúde para o registro interno da casa. As informações são confidenciais.</p>
+
+            <form id="form-ficha-filho">
+                <div class="admin-formulario">
+                    
+                    <div class="admin-campo admin-campo-completo">
+                        <label for="ficha-nome">Nome completo *</label>
+                        <input type="text" id="ficha-nome" name="nome_completo" required>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-email">E-mail</label>
+                        <input type="email" id="ficha-email" name="email">
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-telefone">Telefone / WhatsApp *</label>
+                        <input type="tel" id="ficha-telefone" name="telefone" placeholder="(11) 99999-9999" required>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-rg">RG *</label>
+                        <input type="text" id="ficha-rg" name="rg" required>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-cpf">CPF *</label>
+                        <input type="text" id="ficha-cpf" name="cpf" required>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-nascimento">Data de nascimento *</label>
+                        <input type="date" id="ficha-nascimento" name="data_nascimento" required>
+                    </div>
+
+                    <div class="admin-campo admin-campo-completo">
+                        <label for="ficha-endereco">Endereço completo *</label>
+                        <input type="text" id="ficha-endereco" name="endereco" placeholder="Rua, número, bairro, cidade" required>
+                    </div>
+
+                    <div class="admin-campo admin-campo-completo">
+                        <label for="ficha-emergencia">Contato de emergência (Nome e Telefone) *</label>
+                        <input type="text" id="ficha-emergencia" name="contato_emergencia" placeholder="Ex: Maria (Mãe) - (11) 99999-9999" required>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-tem-filhos">Tem filhos? *</label>
+                        <select id="ficha-tem-filhos" name="tem_filhos" required>
+                            <option value="">Selecione</option>
+                            <option value="Sim">Sim</option>
+                            <option value="Não">Não</option>
+                        </select>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-qtd-filhos">Quantos filhos?</label>
+                        <input type="text" id="ficha-qtd-filhos" name="quantidade_filhos" placeholder="Se não tiver, deixe em branco">
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-alcool">Consumo de bebida alcoólica? *</label>
+                        <select id="ficha-alcool" name="consome_alcool" required>
+                            <option value="">Selecione</option>
+                            <option value="Não">Não</option>
+                            <option value="Socialmente">Socialmente</option>
+                            <option value="Frequentemente">Frequentemente</option>
+                        </select>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-cigarro">Consumo de cigarro / tabaco? *</label>
+                        <select id="ficha-cigarro" name="consome_cigarro" required>
+                            <option value="">Selecione</option>
+                            <option value="Não">Não</option>
+                            <option value="Sim">Sim</option>
+                        </select>
+                    </div>
+
+                    <div class="admin-campo admin-campo-completo">
+                        <label for="ficha-remedios">Faz uso de remédio controlado? Qual(is)?</label>
+                        <input type="text" id="ficha-remedios" name="usa_remedio_controlado" placeholder="Descreva os medicamentos ou informe 'Nenhum'">
+                    </div>
+
+                    <div class="admin-campo admin-campo-completo">
+                        <label for="ficha-alergias">Possui algum tipo de alergia?</label>
+                        <input type="text" id="ficha-alergias" name="alergias" placeholder="Informe alergias a medicamentos, alimentos, etc., ou 'Nenhuma'">
+                    </div>
+
+                </div>
+
+                <button type="submit" class="admin-botao admin-botao-principal" style="margin-top: 15px;">
+                    Enviar minha ficha cadastral
+                </button>
+
+                <p id="mensagem-ficha-filho" role="status" aria-live="polite" style="margin-top: 10px; font-weight: bold;"></p>
+            </form>
+        </div>
+    </section>
+
 </main>
 
 <footer>
@@ -1148,8 +788,6 @@
     <p>Que a fé, a caridade e o amor guiem nossos caminhos.</p>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="supabase.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
