@@ -42,8 +42,8 @@
     <a href="#agenda"><span class="icone-menu">☯</span><span>Jogo de Búzios</span></a>
     <a href="#galeria"><span class="icone-menu">▧</span><span>Galeria</span></a>
     <a href="#contato"><span class="icone-menu">✉</span><span>Contato</span></a>
-    <a href="#cadastro-filhos"><span class="icone-menu">📋</span><span>Ficha Cadastral</span></a>
     <a href="#doacao"><span class="icone-menu">♡</span><span>Faça sua Doação</span></a>
+    <a href="#area-membros"><span class="icone-menu">🔒</span><span>Área de Membros</span></a>
 </nav>
 
 <main>
@@ -667,121 +667,7 @@
         </div>
     </section>
 
-    <!-- FICHA CADASTRAL E DE SAÚDE DOS FILHOS (FORMULÁRIO PÚBLICO) -->
-    <section id="cadastro-filhos" class="secao-recolhivel">
-        <button
-            type="button"
-            class="titulo-recolhivel"
-            aria-expanded="false"
-            aria-controls="conteudo-cadastro-filhos">
-            <span>
-                <span class="subtitulo">SECRETARIA DA CASA</span>
-                <span class="texto-titulo">Ficha Cadastral e de Saúde</span>
-            </span>
-            <span class="sinal-recolher" aria-hidden="true">＋</span>
-        </button>
-
-        <div id="conteudo-cadastro-filhos" class="conteudo-recolhivel" hidden>
-            <p>Preencha os seus dados cadastrais e de saúde para o registro interno da casa. As informações são confidenciais.</p>
-
-            <form id="form-ficha-filho">
-                <div class="admin-formulario">
-                    
-                    <div class="admin-campo admin-campo-completo">
-                        <label for="ficha-nome">Nome completo *</label>
-                        <input type="text" id="ficha-nome" name="nome_completo" required>
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="ficha-email">E-mail</label>
-                        <input type="email" id="ficha-email" name="email">
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="ficha-telefone">Telefone / WhatsApp *</label>
-                        <input type="tel" id="ficha-telefone" name="telefone" placeholder="(11) 99999-9999" required>
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="ficha-rg">RG *</label>
-                        <input type="text" id="ficha-rg" name="rg" required>
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="ficha-cpf">CPF *</label>
-                        <input type="text" id="ficha-cpf" name="cpf" required>
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="ficha-nascimento">Data de nascimento *</label>
-                        <input type="date" id="ficha-nascimento" name="data_nascimento" required>
-                    </div>
-
-                    <div class="admin-campo admin-campo-completo">
-                        <label for="ficha-endereco">Endereço completo *</label>
-                        <input type="text" id="ficha-endereco" name="endereco" placeholder="Rua, número, bairro, cidade" required>
-                    </div>
-
-                    <div class="admin-campo admin-campo-completo">
-                        <label for="ficha-emergencia">Contato de emergência (Nome e Telefone) *</label>
-                        <input type="text" id="ficha-emergencia" name="contato_emergencia" placeholder="Ex: Maria (Mãe) - (11) 99999-9999" required>
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="ficha-tem-filhos">Tem filhos? *</label>
-                        <select id="ficha-tem-filhos" name="tem_filhos" required>
-                            <option value="">Selecione</option>
-                            <option value="Sim">Sim</option>
-                            <option value="Não">Não</option>
-                        </select>
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="ficha-qtd-filhos">Quantos filhos?</label>
-                        <input type="text" id="ficha-qtd-filhos" name="quantidade_filhos" placeholder="Se não tiver, deixe em branco">
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="ficha-alcool">Consumo de bebida alcoólica? *</label>
-                        <select id="ficha-alcool" name="consome_alcool" required>
-                            <option value="">Selecione</option>
-                            <option value="Não">Não</option>
-                            <option value="Socialmente">Socialmente</option>
-                            <option value="Frequentemente">Frequentemente</option>
-                        </select>
-                    </div>
-
-                    <div class="admin-campo">
-                        <label for="ficha-cigarro">Consumo de cigarro / tabaco? *</label>
-                        <select id="ficha-cigarro" name="consome_cigarro" required>
-                            <option value="">Selecione</option>
-                            <option value="Não">Não</option>
-                            <option value="Sim">Sim</option>
-                        </select>
-                    </div>
-
-                    <div class="admin-campo admin-campo-completo">
-                        <label for="ficha-remedios">Faz uso de remédio controlado? Qual(is)?</label>
-                        <input type="text" id="ficha-remedios" name="usa_remedio_controlado" placeholder="Descreva os medicamentos ou informe 'Nenhum'">
-                    </div>
-
-                    <div class="admin-campo admin-campo-completo">
-                        <label for="ficha-alergias">Possui algum tipo de alergia?</label>
-                        <input type="text" id="ficha-alergias" name="alergias" placeholder="Informe alergias a medicamentos, alimentos, etc., ou 'Nenhuma'">
-                    </div>
-
-                </div>
-
-                <button type="submit" class="admin-botao admin-botao-principal" style="margin-top: 15px;">
-                    Enviar minha ficha cadastral
-                </button>
-
-                <p id="mensagem-ficha-filho" role="status" aria-live="polite" style="margin-top: 10px; font-weight: bold;"></p>
-            </form>
-        </div>
-    </section>
-
-    <!-- ÁREA DE MEMBROS E PAINEL ADMINISTRATIVO -->
+    <!-- ÁREA DE MEMBROS E PAINEL ADMINISTRATIVO (COM O FORMULÁRIO E A CONSULTA PROTEGIDA LÁ DENTRO) -->
     <section id="area-membros" class="secao-recolhivel">
         <button
             type="button"
@@ -866,17 +752,118 @@
                     <div id="lista-materiais" style="margin-top: 15px;"></div>
                 </div>
 
-                <!-- REGISTROS DE ASSISTÊNCIA (SE JÁ EXISTIA NO SEU PAINEL) -->
+                <!-- REGISTROS DE ASSISTÊNCIA -->
                 <div class="admin-secao" style="margin-bottom: 30px;">
                     <h4>Registros de Assistência</h4>
                     <button type="button" id="atualizar-registros-assistencia" class="admin-botao admin-botao-secundario">Atualizar registros</button>
                     <div id="lista-registros-assistencia" style="margin-top: 15px;"></div>
                 </div>
 
-                <!-- CONSULTA DE FICHAS CADASTRAIS DOS FILHOS (DENTRO DO PAINEL, PROTEGIDA POR SENHA) -->
+                <!-- 1. FORMULÁRIO DE PREENCHIMENTO DA FICHA (PARA O FILHO LOGADO PREENCHER) -->
+                <div class="admin-secao" style="margin-top: 30px; padding: 20px; background: #fff; border: 1px solid #ddd; border-radius: 8px;">
+                    <h4>Secretaria: Preencher minha Ficha Cadastral e de Saúde</h4>
+                    <p>Preencha os seus dados para o registro interno da casa. Informações confidenciais.</p>
+
+                    <form id="form-ficha-filho">
+                        <div class="admin-formulario">
+                            
+                            <div class="admin-campo admin-campo-completo">
+                                <label for="ficha-nome">Nome completo *</label>
+                                <input type="text" id="ficha-nome" name="nome_completo" required>
+                            </div>
+
+                            <div class="admin-campo">
+                                <label for="ficha-email">E-mail</label>
+                                <input type="email" id="ficha-email" name="email">
+                            </div>
+
+                            <div class="admin-campo">
+                                <label for="ficha-telefone">Telefone / WhatsApp *</label>
+                                <input type="tel" id="ficha-telefone" name="telefone" placeholder="(11) 99999-9999" required>
+                            </div>
+
+                            <div class="admin-campo">
+                                <label for="ficha-rg">RG *</label>
+                                <input type="text" id="ficha-rg" name="rg" required>
+                            </div>
+
+                            <div class="admin-campo">
+                                <label for="ficha-cpf">CPF *</label>
+                                <input type="text" id="ficha-cpf" name="cpf" required>
+                            </div>
+
+                            <div class="admin-campo">
+                                <label for="ficha-nascimento">Data de nascimento *</label>
+                                <input type="date" id="ficha-nascimento" name="data_nascimento" required>
+                            </div>
+
+                            <div class="admin-campo admin-campo-completo">
+                                <label for="ficha-endereco">Endereço completo *</label>
+                                <input type="text" id="ficha-endereco" name="endereco" placeholder="Rua, número, bairro, cidade" required>
+                            </div>
+
+                            <div class="admin-campo admin-campo-completo">
+                                <label for="ficha-emergencia">Contato de emergência (Nome e Telefone) *</label>
+                                <input type="text" id="ficha-emergencia" name="contato_emergencia" placeholder="Ex: Maria (Mãe) - (11) 99999-9999" required>
+                            </div>
+
+                            <div class="admin-campo">
+                                <label for="ficha-tem-filhos">Tem filhos? *</label>
+                                <select id="ficha-tem-filhos" name="tem_filhos" required>
+                                    <option value="">Selecione</option>
+                                    <option value="Sim">Sim</option>
+                                    <option value="Não">Não</option>
+                                </select>
+                            </div>
+
+                            <div class="admin-campo">
+                                <label for="ficha-qtd-filhos">Quantos filhos?</label>
+                                <input type="text" id="ficha-qtd-filhos" name="quantidade_filhos" placeholder="Se não tiver, deixe em branco">
+                            </div>
+
+                            <div class="admin-campo">
+                                <label for="ficha-alcool">Consumo de bebida alcoólica? *</label>
+                                <select id="ficha-alcool" name="consome_alcool" required>
+                                    <option value="">Selecione</option>
+                                    <option value="Não">Não</option>
+                                    <option value="Socialmente">Socialmente</option>
+                                    <option value="Frequentemente">Frequentemente</option>
+                                </select>
+                            </div>
+
+                            <div class="admin-campo">
+                                <label for="ficha-cigarro">Consumo de cigarro / tabaco? *</label>
+                                <select id="ficha-cigarro" name="consome_cigarro" required>
+                                    <option value="">Selecione</option>
+                                    <option value="Não">Não</option>
+                                    <option value="Sim">Sim</option>
+                                </select>
+                            </div>
+
+                            <div class="admin-campo admin-campo-completo">
+                                <label for="ficha-remedios">Faz uso de remédio controlado? Qual(is)?</label>
+                                <input type="text" id="ficha-remedios" name="usa_remedio_controlado" placeholder="Descreva os medicamentos ou informe 'Nenhum'">
+                            </div>
+
+                            <div class="admin-campo admin-campo-completo">
+                                <label for="ficha-alergias">Possui algum tipo de alergia?</label>
+                                <input type="text" id="ficha-alergias" name="alergias" placeholder="Informe alergias a medicamentos, alimentos, etc., ou 'Nenhuma'">
+                            </div>
+
+                        </div>
+
+                        <button type="submit" class="admin-botao admin-botao-principal" style="margin-top: 15px;">
+                            Enviar minha ficha cadastral
+                        </button>
+
+                        <p id="mensagem-ficha-filho" role="status" aria-live="polite" style="margin-top: 10px; font-weight: bold;"></p>
+                    </form>
+                </div>
+
+                <!-- 2. ÁREA RESTRITA SECUNDÁRIA (PROTEGIDA POR SENHA PARA VER TODAS AS FICHAS) -->
                 <div class="admin-secao" style="margin-top: 30px; padding: 20px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px;">
-                    <h4>Secretaria: Fichas Cadastrais e de Saúde dos Filhos</h4>
-                    <p>Área restrita e confidencial. Digite a senha administrativa exclusiva para visualizar os cadastros.</p>
+                    <h4>Secretaria: Consulta Geral das Fichas (Protegido por Senha)</h4>
+                    <p>Digite a senha administrativa exclusiva da secretaria para visualizar todos os cadastros enviados.</p>
 
                     <div id="container-senha-fichas" style="margin-bottom: 15px;">
                         <label for="senha-admin-fichas">Senha de acesso exclusivo:</label>
