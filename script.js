@@ -44,7 +44,7 @@ botaoPix.addEventListener("click", async function () {
 
     if (copiou) {
         campoMensagem.textContent =
-            "Chave Pix copiada! Abra o aplicativo do seu banco para pagar R$ 100,00.";
+            "Chave Pix copiada! Abra o aplicativo do seu banco para pagar R$ 150,00.";
     } else {
         campoMensagem.textContent =
             "Não foi possível copiar automaticamente. Selecione e copie a chave Pix: " + chavePix;
@@ -82,7 +82,7 @@ botaoPix.addEventListener("click", async function () {
             "Data desejada: " + dataFormatada + "\n" +
             "Horário desejado: " + horario + "\n" +
             "Atendimento presencial\n" +
-            "Valor: R$ 100,00\n" +
+            "Valor: R$ 150,00\n" +
             "Pix utilizado: " + chavePix + "\n\n" +
             "Realizei o pagamento e vou enviar o comprovante nesta conversa. Por favor, confirmem o recebimento e a disponibilidade do horário.";
 
