@@ -1052,3 +1052,63 @@ if (botaoSairAdministracao) {
 
     carregarRegistrosAssistencia();
 })();
+
+
+/* ==================================================== */
+/* ENVIO E GESTÃO SEGURA DAS FICHAS CADASTRAIS DOS FILHOS */
+/* ==================================================== */
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    // 1. Envio do Formulário pelos Filhos
+    const formFichaFilho = document.getElementById("form-ficha-filho");
+    const mensagemFichaFilho = document.getElementById("mensagem-ficha-filho");
+
+    if (formFichaFilho) {
+        formFichaFilho.addEventListener("submit", async function (e) {
+            e.preventDefault();
+
+            if (mensagemFichaFilho) {
+                mensagemFichaFilho.textContent = "Enviando sua ficha...";
+                mensagemFichaFilho.style.color = "#333";
+            }
+
+            const dadosFicha = {
+                nome_completo: document.getElementById("ficha-nome").value.trim(),
+                email: document.getElementById("ficha-email").value.trim(),
+                telefone: document.getElementById("ficha-telefone").value.trim(),
+                rg: document.getElementById("ficha-rg").value.trim(),
+                cpf: document.getElementById("ficha-cpf").value.trim(),
+                data_nascimento: document.getElementById("ficha-nascimento").value,
+                endereco: document.getElementById("ficha-endereco").value.trim(),
+                contato_emergencia: document.getElementById("ficha-emergencia").value.trim(),
+                tem_filhos: document.getElementById("ficha-tem-filhos").value,
+                quantidade_filhos: document.getElementById("ficha-qtd-filhos").value.trim(),
+                consome_alcool: document.getElementById("ficha-alcool").value,
+                consome_cigarro: document.getElementById("ficha-cigarro").value,
+                usa_remedio_controlado: document.getElementById("ficha-remedios").value.trim(),
+                alergias: document.getElementById("ficha-alergias").value.trim()
+            };
+
+            const { error } = await supabaseClient
+                .from("fichas_cadastrais_filhos")
+                .insert([dadosFicha]);
+
+            if (error) {
+                console.error("Erro ao enviar ficha:", error.message);
+                if (mensagemFichaFilho) {
+                    mensagemFichaFilho.textContent = "Erro ao enviar: " + error.message;
+                    mensagemFichaFilho.style.color = "red";
+                }
+                return;
+            }
+
+            if (mensagemFichaFilho) {
+                mensagemFichaFilho.textContent = "Ficha cadastral enviada com sucesso! Obrigado.";
+                mensagemFichaFilho.style.color = "green";
+            }
+            formFichaFilho.reset();
+        });
+    }
+
+});
