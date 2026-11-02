@@ -581,4 +581,336 @@
     <section id="contato" class="secao-contato">
         <p class="subtitulo">ESTAMOS À DISPOSIÇÃO</p>
 
-        <h2>
+        <h2>Entre em contato</h2>
+
+        <p>
+            Quer conhecer nossa casa ou saber mais sobre nossas atividades?
+            Será um prazer conversar com você.
+        </p>
+
+        <div class="endereco-casa">
+            <h3>Onde estamos</h3>
+
+            <p>
+                Rua Sebastião Batista, 70<br>
+                Cidade Tiradentes — São Paulo/SP<br>
+                CEP: 08470-330
+            </p>
+
+            <a
+                class="botao-contato"
+                href="https://www.google.com/maps/search/?api=1&query=Rua+Sebasti%C3%A3o+Batista%2C+70%2C+Cidade+Tiradentes%2C+S%C3%A3o+Paulo%2C+SP%2C+08470-330"
+                target="_blank"
+                rel="noopener noreferrer">
+                Como chegar
+            </a>
+
+            <a
+                class="botao-contato"
+                href="https://share.google/6bIe4OYxPZc1AQIvM"
+                target="_blank"
+                rel="noopener noreferrer">
+                Ver perfil no Google
+            </a>
+        </div>
+
+        <div class="mapa-casa">
+            <iframe
+                src="https://maps.google.com/maps?q=Rua%20Sebasti%C3%A3o%20Batista%2C%2070%2C%20Cidade%20Tiradentes%2C%20S%C3%A3o%20Paulo%2C%20SP%2C%2008470-330&z=16&output=embed"
+                width="100%"
+                height="350"
+                style="border: 0;"
+                loading="lazy"
+                allowfullscreen
+                title="Localização da Casa de Lei">
+            </iframe>
+        </div>
+
+        <div class="contatos-lista">
+
+            <div class="contato-item">
+                <h3>WhatsApp</h3>
+                <p>Fale diretamente conosco para tirar suas dúvidas.</p>
+                <a
+                    class="botao-contato"
+                    href="https://wa.me/5511986005002"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    Conversar pelo WhatsApp
+                </a>
+            </div>
+
+            <div class="contato-item">
+                <h3>Facebook</h3>
+                <p>Acompanhe nossas publicações e momentos da casa.</p>
+                <a
+                    class="botao-contato"
+                    href="https://www.facebook.com/share/1E5fMGiyqx/"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    Visitar Facebook
+                </a>
+            </div>
+
+            <div class="contato-item">
+                <h3>Instagram</h3>
+                <p>Veja nossas publicações, fotos e atividades.</p>
+                <a
+                    class="botao-contato"
+                    href="https://www.instagram.com/casadeleimaeyemanja_/"
+                    target="_blank"
+                    rel="noopener noreferrer">
+                    Visitar Instagram
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FICHA CADASTRAL E DE SAÚDE DOS FILHOS (FORMULÁRIO PÚBLICO) -->
+    <section id="cadastro-filhos" class="secao-recolhivel">
+        <button
+            type="button"
+            class="titulo-recolhivel"
+            aria-expanded="false"
+            aria-controls="conteudo-cadastro-filhos">
+            <span>
+                <span class="subtitulo">SECRETARIA DA CASA</span>
+                <span class="texto-titulo">Ficha Cadastral e de Saúde</span>
+            </span>
+            <span class="sinal-recolher" aria-hidden="true">＋</span>
+        </button>
+
+        <div id="conteudo-cadastro-filhos" class="conteudo-recolhivel" hidden>
+            <p>Preencha os seus dados cadastrais e de saúde para o registro interno da casa. As informações são confidenciais.</p>
+
+            <form id="form-ficha-filho">
+                <div class="admin-formulario">
+                    
+                    <div class="admin-campo admin-campo-completo">
+                        <label for="ficha-nome">Nome completo *</label>
+                        <input type="text" id="ficha-nome" name="nome_completo" required>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-email">E-mail</label>
+                        <input type="email" id="ficha-email" name="email">
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-telefone">Telefone / WhatsApp *</label>
+                        <input type="tel" id="ficha-telefone" name="telefone" placeholder="(11) 99999-9999" required>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-rg">RG *</label>
+                        <input type="text" id="ficha-rg" name="rg" required>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-cpf">CPF *</label>
+                        <input type="text" id="ficha-cpf" name="cpf" required>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-nascimento">Data de nascimento *</label>
+                        <input type="date" id="ficha-nascimento" name="data_nascimento" required>
+                    </div>
+
+                    <div class="admin-campo admin-campo-completo">
+                        <label for="ficha-endereco">Endereço completo *</label>
+                        <input type="text" id="ficha-endereco" name="endereco" placeholder="Rua, número, bairro, cidade" required>
+                    </div>
+
+                    <div class="admin-campo admin-campo-completo">
+                        <label for="ficha-emergencia">Contato de emergência (Nome e Telefone) *</label>
+                        <input type="text" id="ficha-emergencia" name="contato_emergencia" placeholder="Ex: Maria (Mãe) - (11) 99999-9999" required>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-tem-filhos">Tem filhos? *</label>
+                        <select id="ficha-tem-filhos" name="tem_filhos" required>
+                            <option value="">Selecione</option>
+                            <option value="Sim">Sim</option>
+                            <option value="Não">Não</option>
+                        </select>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-qtd-filhos">Quantos filhos?</label>
+                        <input type="text" id="ficha-qtd-filhos" name="quantidade_filhos" placeholder="Se não tiver, deixe em branco">
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-alcool">Consumo de bebida alcoólica? *</label>
+                        <select id="ficha-alcool" name="consome_alcool" required>
+                            <option value="">Selecione</option>
+                            <option value="Não">Não</option>
+                            <option value="Socialmente">Socialmente</option>
+                            <option value="Frequentemente">Frequentemente</option>
+                        </select>
+                    </div>
+
+                    <div class="admin-campo">
+                        <label for="ficha-cigarro">Consumo de cigarro / tabaco? *</label>
+                        <select id="ficha-cigarro" name="consome_cigarro" required>
+                            <option value="">Selecione</option>
+                            <option value="Não">Não</option>
+                            <option value="Sim">Sim</option>
+                        </select>
+                    </div>
+
+                    <div class="admin-campo admin-campo-completo">
+                        <label for="ficha-remedios">Faz uso de remédio controlado? Qual(is)?</label>
+                        <input type="text" id="ficha-remedios" name="usa_remedio_controlado" placeholder="Descreva os medicamentos ou informe 'Nenhum'">
+                    </div>
+
+                    <div class="admin-campo admin-campo-completo">
+                        <label for="ficha-alergias">Possui algum tipo de alergia?</label>
+                        <input type="text" id="ficha-alergias" name="alergias" placeholder="Informe alergias a medicamentos, alimentos, etc., ou 'Nenhuma'">
+                    </div>
+
+                </div>
+
+                <button type="submit" class="admin-botao admin-botao-principal" style="margin-top: 15px;">
+                    Enviar minha ficha cadastral
+                </button>
+
+                <p id="mensagem-ficha-filho" role="status" aria-live="polite" style="margin-top: 10px; font-weight: bold;"></p>
+            </form>
+        </div>
+    </section>
+
+    <!-- ÁREA DE MEMBROS E PAINEL ADMINISTRATIVO -->
+    <section id="area-membros" class="secao-recolhivel">
+        <button
+            type="button"
+            class="titulo-recolhivel"
+            aria-expanded="false"
+            aria-controls="conteudo-area-membros">
+            <span>
+                <span class="subtitulo">RESTRITO AOS MEMBROS</span>
+                <span class="texto-titulo">Área de Membros</span>
+            </span>
+            <span class="sinal-recolher" aria-hidden="true">＋</span>
+        </button>
+
+        <div id="conteudo-area-membros" class="conteudo-recolhivel" hidden>
+            <p>Faça login para acessar o painel administrativo da casa.</p>
+
+            <form id="form-login-membros">
+                <div class="admin-campo">
+                    <label for="email-membro">E-mail *</label>
+                    <input type="email" id="email-membro" required>
+                </div>
+                <div class="admin-campo">
+                    <label for="senha-membro">Senha *</label>
+                    <input type="password" id="senha-membro" required>
+                </div>
+                <button type="submit" class="admin-botao admin-botao-principal" style="margin-top: 10px;">
+                    Entrar no painel
+                </button>
+            </form>
+
+            <p id="mensagem-login" role="status" style="margin-top: 10px; font-weight: bold;"></p>
+
+            <!-- PAINEL ADMINISTRATIVO (APARECE APÓS O LOGIN) -->
+            <div id="painel-administrativo" hidden style="margin-top: 30px; border-top: 2px solid #ccc; padding-top: 20px;">
+                <h3>Painel Administrativo da Casa</h3>
+
+                <!-- CONTROLE DE MATERIAIS DA CASA -->
+                <div class="admin-secao" style="margin-bottom: 30px;">
+                    <h4>Controle de Materiais</h4>
+                    
+                    <div class="admin-formulario">
+                        <div class="admin-campo">
+                            <label for="material-item">Nome do material *</label>
+                            <input type="text" id="material-item" placeholder="Ex: Vela branca">
+                        </div>
+
+                        <div class="admin-campo">
+                            <label for="material-quantidade">Quantidade</label>
+                            <input type="text" id="material-quantidade" placeholder="Ex: 10 pacotes">
+                        </div>
+
+                        <div class="admin-campo">
+                            <label for="material-categoria">Categoria</label>
+                            <input type="text" id="material-categoria" placeholder="Ex: Altar, Limpeza, etc.">
+                        </div>
+
+                        <div class="admin-campo">
+                            <label for="material-status">Situação</label>
+                            <select id="material-status">
+                                <option value="Pendente">Pendente</option>
+                                <option value="Em estoque">Em estoque</option>
+                                <option value="Urgente">Urgente</option>
+                            </select>
+                        </div>
+
+                        <div class="admin-campo admin-campo-completo">
+                            <label for="material-observacao">Observações</label>
+                            <input type="text" id="material-observacao" placeholder="Detalhes adicionais">
+                        </div>
+                    </div>
+
+                    <button type="button" id="cadastrar-material" class="admin-botao admin-botao-principal" style="margin-top: 10px;">
+                        Cadastrar material
+                    </button>
+
+                    <button type="button" id="atualizar-materiais" class="admin-botao admin-botao-secundario" style="margin-top: 10px;">
+                        Atualizar lista
+                    </button>
+
+                    <p id="mensagem-materiais" role="status" style="margin-top: 10px;"></p>
+
+                    <div id="lista-materiais" style="margin-top: 15px;"></div>
+                </div>
+
+                <!-- REGISTROS DE ASSISTÊNCIA (SE JÁ EXISTIA NO SEU PAINEL) -->
+                <div class="admin-secao" style="margin-bottom: 30px;">
+                    <h4>Registros de Assistência</h4>
+                    <button type="button" id="atualizar-registros-assistencia" class="admin-botao admin-botao-secundario">Atualizar registros</button>
+                    <div id="lista-registros-assistencia" style="margin-top: 15px;"></div>
+                </div>
+
+                <!-- CONSULTA DE FICHAS CADASTRAIS DOS FILHOS (DENTRO DO PAINEL, PROTEGIDA POR SENHA) -->
+                <div class="admin-secao" style="margin-top: 30px; padding: 20px; background: #f9f9f9; border: 1px solid #ddd; border-radius: 8px;">
+                    <h4>Secretaria: Fichas Cadastrais e de Saúde dos Filhos</h4>
+                    <p>Área restrita e confidencial. Digite a senha administrativa exclusiva para visualizar os cadastros.</p>
+
+                    <div id="container-senha-fichas" style="margin-bottom: 15px;">
+                        <label for="senha-admin-fichas">Senha de acesso exclusivo:</label>
+                        <input type="password" id="senha-admin-fichas" placeholder="Digite a senha" style="padding: 8px; margin-right: 10px;">
+                        <button type="button" id="botao-liberar-fichas" class="admin-botao admin-botao-principal">Liberar Fichas</button>
+                        <p id="mensagem-senha-fichas" role="status" style="margin-top: 8px; font-weight: bold;"></p>
+                    </div>
+
+                    <!-- Lista de Fichas (fica oculta até digitar a senha correta) -->
+                    <div id="conteudo-fichas-restrito" hidden style="margin-top: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h5>Fichas Cadastradas</h5>
+                            <button type="button" id="atualizar-fichas-filhos" class="admin-botao">Atualizar Lista</button>
+                        </div>
+                        <div id="lista-fichas-filhos">
+                            <!-- As fichas do Supabase aparecerão aqui dinamicamente -->
+                        </div>
+                    </div>
+                </div>
+
+                <button type="button" id="sair-administracao" class="admin-botao admin-botao-perigo" style="margin-top: 25px;">
+                    Sair da conta
+                </button>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>Casa de Lei Mãe Iemanjá e Pai Benedito das Almas</p>
+    <p>Que a fé, a caridade e o amor guiem nossos caminhos.</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
