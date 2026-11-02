@@ -1806,4 +1806,18 @@ footer p + p {
 #secao-registro-assistencia #mensagem-registro-assistencia {
     margin-top: 12px;
 }
+/* ==================================================== */
+/* PADRONIZAR LARGURA DAS CAIXAS DO PAINEL ADMINISTRATIVO */
+/* ==================================================== */
 
+#painel-administrativo .secao-recolhivel {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+#painel-administrativo .titulo-recolhivel {
+    width: 100%;
+    box-sizing: border-box;
+}
