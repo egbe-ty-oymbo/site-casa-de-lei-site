@@ -1,13 +1,13 @@
-const CACHE_NAME = "casa-de-lei-v1";
+const CACHE_NAME = "casa-de-lei-v2";
 
 const URLS_TO_CACHE = [
-  "/site-casa-de-lei-site/",
-  "/site-casa-de-lei-site/index.html",
-  "/site-casa-de-lei-site/style.css",
-  "/site-casa-de-lei-site/script.js",
-  "/site-casa-de-lei-site/manifest.json",
-  "/site-casa-de-lei-site/imagens/icon-192.png",
-  "/site-casa-de-lei-site/imagens/icon-512.png"
+  "/",
+  "/index.html",
+  "/style.css",
+  "/script.js",
+  "/manifest.json",
+  "/imagens/icon-192.png",
+  "/imagens/icon-512.png"
 ];
 
 self.addEventListener("install", (event) => {
