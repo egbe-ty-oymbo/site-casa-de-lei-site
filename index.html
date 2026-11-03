@@ -1197,8 +1197,7 @@
     <script>
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
-      navigator.serviceWorker.register("/site-casa-de-lei-site/service-worker.js")
-        .then(() => console.log("Aplicativo Casa de Lei configurado!"))
+navigator.serviceWorker.register("/service-worker.js")        .then(() => console.log("Aplicativo Casa de Lei configurado!"))
         .catch((error) => console.error("Erro ao configurar aplicativo:", error));
     });
   }
