@@ -1070,9 +1070,8 @@ if (botaoSairAdministracao) {
         listaFichasFilhos.textContent = "Carregando fichas...";
 
         const { data, error } = await supabaseClient
-            .from("fichas_cadastrais_filhos")
-            .select("*")
-            .order("created_at", { ascending: false });
+    .from("fichas_cadastrais_filhos")
+    .select("*");
 
         if (error) {
             console.error("Erro ao buscar fichas:", error.message);
