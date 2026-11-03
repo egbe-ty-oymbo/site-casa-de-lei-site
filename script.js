@@ -1187,3 +1187,64 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+/* MENUS RECOLHÍVEIS DO PAINEL ADMINISTRATIVO */
+(function () {
+    function iniciarMenusAdmin() {
+        const painel = document.getElementById("painel-administrativo");
+
+        if (!painel || painel.dataset.accordionIniciado === "true") return;
+
+        const cartoes = painel.querySelectorAll(":scope > .admin-cartao");
+
+        cartoes.forEach((cartao, index) => {
+            const titulo = cartao.querySelector(":scope > h3");
+
+            if (!titulo) return;
+
+            const botao = document.createElement("button");
+            botao.type = "button";
+            botao.className = "admin-accordion-titulo";
+            botao.setAttribute("aria-expanded", "false");
+
+            const texto = document.createElement("span");
+            texto.textContent = titulo.textContent;
+
+            const seta = document.createElement("span");
+            seta.className = "admin-accordion-seta";
+            seta.innerHTML = "⌄";
+
+            botao.appendChild(texto);
+            botao.appendChild(seta);
+
+            const conteudo = document.createElement("div");
+            conteudo.className = "admin-accordion-conteudo";
+            conteudo.hidden = true;
+            conteudo.id = "admin-accordion-conteudo-" + index;
+
+            botao.setAttribute("aria-controls", conteudo.id);
+
+            while (titulo.nextSibling) {
+                conteudo.appendChild(titulo.nextSibling);
+            }
+
+            titulo.replaceWith(botao);
+            cartao.appendChild(conteudo);
+
+            botao.addEventListener("click", function () {
+                const aberto = botao.getAttribute("aria-expanded") === "true";
+
+                botao.setAttribute("aria-expanded", String(!aberto));
+                conteudo.hidden = aberto;
+            });
+        });
+
+        painel.dataset.accordionIniciado = "true";
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", iniciarMenusAdmin);
+    } else {
+        iniciarMenusAdmin();
+    }
+})();
