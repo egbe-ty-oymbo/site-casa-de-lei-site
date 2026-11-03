@@ -89,7 +89,7 @@
                 <p id="mensagem-login" role="status"></p>
             </form>
 
-            <!-- PAINEL ADMINISTRATIVO (APARECE APÓS O LOGIN) -->
+            <!-- PAINEL ADMINISTRATIVO (EXIBIDO APÓS O LOGIN) -->
             <div id="painel-administrativo" hidden style="margin-top: 30px; border-top: 2px solid #ccc; padding-top: 20px;">
                 
                 <div class="admin-cabecalho" style="margin-bottom: 20px;">
@@ -98,313 +98,261 @@
                     <p>Gerencie os materiais, acompanhe as assistências e a secretaria da casa.</p>
                 </div>
 
-                <!-- 1. CONTROLE DE MATERIAIS (PADRÃO RECOLHÍVEL) -->
-                <section class="secao-recolhivel" style="margin-bottom: 20px;">
-                    <button
-                        type="button"
-                        class="titulo-recolhivel"
-                        aria-expanded="false"
-                        aria-controls="conteudo-material">
-                        <span>
-                            <span class="subtitulo">GESTÃO</span>
-                            <span class="texto-titulo">Controle de Materiais</span>
-                        </span>
-                        <span class="sinal-recolher" aria-hidden="true">＋</span>
-                    </button>
-
-                    <div id="conteudo-material" class="conteudo-recolhivel" hidden>
-                        <div class="admin-formulario">
-                            <div class="admin-campo">
-                                <label for="material-item">Nome do material</label>
-                                <input type="text" id="material-item" placeholder="Ex.: Velas">
-                            </div>
-
-                            <div class="admin-campo">
-                                <label for="material-quantidade">Quantidade</label>
-                                <input type="text" id="material-quantidade" placeholder="Ex.: 20 unidades">
-                            </div>
-
-                            <div class="admin-campo">
-                                <label for="material-categoria">Categoria</label>
-                                <input type="text" id="material-categoria" placeholder="Ex.: Material religioso">
-                            </div>
-
-                            <div class="admin-campo">
-                                <label for="material-status">Situação</label>
-                                <select id="material-status">
-                                    <option value="Pendente">Pendente</option>
-                                    <option value="Resolvido">Resolvido</option>
-                                </select>
-                            </div>
-
-                            <div class="admin-campo admin-campo-completo">
-                                <label for="material-observacao">Observações</label>
-                                <textarea id="material-observacao" placeholder="Informações adicionais"></textarea>
-                            </div>
+                <!-- 1. CONTROLE DE MATERIAIS -->
+                <div class="admin-cartao" style="margin-bottom: 20px;">
+                    <h3>Controle de Materiais</h3>
+                    <div class="admin-formulario">
+                        <div class="admin-campo">
+                            <label for="material-item">Nome do material</label>
+                            <input type="text" id="material-item" placeholder="Ex.: Velas">
                         </div>
 
-                        <button type="button" id="cadastrar-material" class="admin-botao admin-botao-principal" style="margin-top: 10px;">
-                            Cadastrar material
-                        </button>
+                        <div class="admin-campo">
+                            <label for="material-quantidade">Quantidade</label>
+                            <input type="text" id="material-quantidade" placeholder="Ex.: 20 unidades">
+                        </div>
 
-                        <p id="mensagem-materiais" role="status"></p>
+                        <div class="admin-campo">
+                            <label for="material-categoria">Categoria</label>
+                            <input type="text" id="material-categoria" placeholder="Ex.: Material religioso">
+                        </div>
 
-                        <div class="admin-cartao-lista" style="margin-top: 20px;">
-                            <div class="admin-lista-cabecalho">
-                                <h3>Materiais cadastrados</h3>
-                                <button type="button" id="atualizar-materiais" class="admin-botao admin-botao-secundario">
-                                    ↻ Atualizar lista
-                                </button>
-                            </div>
-                            <div id="lista-materiais" style="margin-top: 10px;"></div>
+                        <div class="admin-campo">
+                            <label for="material-status">Situação</label>
+                            <select id="material-status">
+                                <option value="Pendente">Pendente</option>
+                                <option value="Resolvido">Resolvido</option>
+                            </select>
+                        </div>
+
+                        <div class="admin-campo admin-campo-completo">
+                            <label for="material-observacao">Observações</label>
+                            <textarea id="material-observacao" placeholder="Informações adicionais"></textarea>
                         </div>
                     </div>
-                </section>
 
-                <!-- 2. REGISTRO DE ASSISTÊNCIA (PADRÃO RECOLHÍVEL) -->
-                <section class="secao-recolhivel" style="margin-bottom: 20px;">
-                    <button
-                        type="button"
-                        class="titulo-recolhivel"
-                        aria-expanded="false"
-                        aria-controls="conteudo-assistencia-geral">
-                        <span>
-                            <span class="subtitulo">ACOLHIMENTO</span>
-                            <span class="texto-titulo">Registro da Assistência</span>
-                        </span>
-                        <span class="sinal-recolher" aria-hidden="true">＋</span>
+                    <button type="button" id="cadastrar-material" class="admin-botao admin-botao-principal" style="margin-top: 10px;">
+                        Cadastrar material
                     </button>
 
-                    <div id="conteudo-assistencia-geral" class="conteudo-recolhivel" hidden>
-                        <p>Os registros ficam organizados pela data da gira.</p>
+                    <p id="mensagem-materiais" role="status"></p>
 
-                        <!-- PRIMEIRA VEZ -->
-                        <div class="admin-cartao" style="margin-top: 15px;">
-                            <h3>Assistência de primeira vez</h3>
-                            <p>Cadastro completo de quem está visitando a casa pela primeira vez.</p>
-
-                            <button type="button" id="abrir-registro-assistencia"
-                                class="admin-botao admin-botao-secundario"
-                                aria-expanded="false" aria-controls="formulario-registro-assistencia">
-                                ＋ Registrar assistência de primeira vez
+                    <div class="admin-cartao-lista" style="margin-top: 20px;">
+                        <div class="admin-lista-cabecalho">
+                            <h3>Materiais cadastrados</h3>
+                            <button type="button" id="atualizar-materiais" class="admin-botao admin-botao-secundario">
+                                ↻ Atualizar lista
                             </button>
-
-                            <div id="formulario-registro-assistencia" hidden style="margin-top: 15px;">
-                                <form id="form-registro-assistencia">
-                                    <div class="admin-formulario">
-                                        <div class="admin-campo">
-                                            <label for="assistencia-data">Data da gira *</label>
-                                            <input type="date" id="assistencia-data" name="data_assistencia" required>
-                                        </div>
-                                        <div class="admin-campo">
-                                            <label for="assistencia-gira">Gira frequentada *</label>
-                                            <input type="text" id="assistencia-gira" name="gira" placeholder="Ex.: Gira de Caboclos" required>
-                                        </div>
-                                        <div class="admin-campo">
-                                            <label for="assistencia-responsavel">Responsável pela recepção *</label>
-                                            <input type="text" id="assistencia-responsavel" name="responsavel" placeholder="Nome de quem recebeu" required>
-                                        </div>
-                                        <div class="admin-campo">
-                                            <label for="assistencia-nome">Nome completo *</label>
-                                            <input type="text" id="assistencia-nome" name="nome" required>
-                                        </div>
-                                        <div class="admin-campo">
-                                            <label for="assistencia-email">E-mail</label>
-                                            <input type="email" id="assistencia-email" name="email">
-                                        </div>
-                                        <div class="admin-campo">
-                                            <label for="assistencia-telefone">Telefone / WhatsApp</label>
-                                            <input type="tel" id="assistencia-telefone" name="telefone" placeholder="(11) 99999-9999">
-                                        </div>
-                                        <div class="admin-campo admin-campo-completo">
-                                            <label for="assistencia-endereco">Endereço</label>
-                                            <input type="text" id="assistencia-endereco" name="endereco" placeholder="Rua, número, bairro e cidade">
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="admin-botao admin-botao-principal" style="margin-top: 10px;">Salvar registro</button>
-                                    <p id="mensagem-registro-assistencia" role="status" style="margin-top: 5px;"></p>
-                                </form>
-                            </div>
                         </div>
+                        <div id="lista-materiais" style="margin-top: 10px;"></div>
+                    </div>
+                </div>
 
-                        <!-- ASSISTÊNCIA FIXA -->
-                        <div class="admin-cartao" style="margin-top: 15px;">
-                            <h3>Assistência fixa</h3>
-                            <p>Registro de presença das pessoas que já frequentam a casa.</p>
+                <!-- 2. REGISTRO DE ASSISTÊNCIA -->
+                <div class="admin-cartao" style="margin-bottom: 20px;">
+                    <h3>Registro da Assistência</h3>
+                    <p>Os registros ficam organizados pela data da gira.</p>
 
-                            <button type="button" id="abrir-assistencia-fixa"
-                                class="admin-botao admin-botao-secundario"
-                                aria-expanded="false" aria-controls="formulario-assistencia-fixa">
-                                ＋ Registrar assistência fixa
-                            </button>
+                    <!-- PRIMEIRA VEZ -->
+                    <div style="margin-top: 15px;">
+                        <h4>Assistência de primeira vez</h4>
+                        <p>Cadastro completo de quem está visitando a casa pela primeira vez.</p>
 
-                            <div id="formulario-assistencia-fixa" hidden style="margin-top: 15px;">
-                                <form id="form-assistencia-fixa">
-                                    <div class="admin-formulario">
-                                        <div class="admin-campo">
-                                            <label for="assistencia-fixa-data">Data da gira *</label>
-                                            <input type="date" id="assistencia-fixa-data" name="data-assistencia" required>
-                                        </div>
-                                        <div class="admin-campo admin-campo-completo">
-                                            <label>Nome das pessoas presentes *</label>
-                                            <div id="lista-nomes-assistencia-fixa">
-                                                <div class="campo-nome-assistencia-fixa">
-                                                    <input type="text" name="nomes-assistencia-fixa" placeholder="Nome completo" required>
-                                                </div>
+                        <button type="button" id="abrir-registro-assistencia"
+                            class="admin-botao admin-botao-secundario"
+                            aria-expanded="false" aria-controls="formulario-registro-assistencia">
+                            ＋ Registrar assistência de primeira vez
+                        </button>
+
+                        <div id="formulario-registro-assistencia" hidden style="margin-top: 15px;">
+                            <form id="form-registro-assistencia">
+                                <div class="admin-formulario">
+                                    <div class="admin-campo">
+                                        <label for="assistencia-data">Data da gira *</label>
+                                        <input type="date" id="assistencia-data" name="data_assistencia" required>
+                                    </div>
+                                    <div class="admin-campo">
+                                        <label for="assistencia-gira">Gira frequentada *</label>
+                                        <input type="text" id="assistencia-gira" name="gira" placeholder="Ex.: Gira de Caboclos" required>
+                                    </div>
+                                    <div class="admin-campo">
+                                        <label for="assistencia-responsavel">Responsável pela recepção *</label>
+                                        <input type="text" id="assistencia-responsavel" name="responsavel" placeholder="Nome de quem recebeu" required>
+                                    </div>
+                                    <div class="admin-campo">
+                                        <label for="assistencia-nome">Nome completo *</label>
+                                        <input type="text" id="assistencia-nome" name="nome" required>
+                                    </div>
+                                    <div class="admin-campo">
+                                        <label for="assistencia-email">E-mail</label>
+                                        <input type="email" id="assistencia-email" name="email">
+                                    </div>
+                                    <div class="admin-campo">
+                                        <label for="assistencia-telefone">Telefone / WhatsApp</label>
+                                        <input type="tel" id="assistencia-telefone" name="telefone" placeholder="(11) 99999-9999">
+                                    </div>
+                                    <div class="admin-campo admin-campo-completo">
+                                        <label for="assistencia-endereco">Endereço</label>
+                                        <input type="text" id="assistencia-endereco" name="endereco" placeholder="Rua, número, bairro e cidade">
+                                    </div>
+                                </div>
+                                <button type="submit" class="admin-botao admin-botao-principal" style="margin-top: 10px;">Salvar registro</button>
+                                <p id="mensagem-registro-assistencia" role="status" style="margin-top: 5px;"></p>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ASSISTÊNCIA FIXA -->
+                    <div style="margin-top: 20px;">
+                        <h4>Assistência fixa</h4>
+                        <p>Registro de presença das pessoas que já frequentam a casa.</p>
+
+                        <button type="button" id="abrir-assistencia-fixa"
+                            class="admin-botao admin-botao-secundario"
+                            aria-expanded="false" aria-controls="formulario-assistencia-fixa">
+                            ＋ Registrar assistência fixa
+                        </button>
+
+                        <div id="formulario-assistencia-fixa" hidden style="margin-top: 15px;">
+                            <form id="form-assistencia-fixa">
+                                <div class="admin-formulario">
+                                    <div class="admin-campo">
+                                        <label for="assistencia-fixa-data">Data da gira *</label>
+                                        <input type="date" id="assistencia-fixa-data" name="data-assistencia" required>
+                                    </div>
+                                    <div class="admin-campo admin-campo-completo">
+                                        <label>Nome das pessoas presentes *</label>
+                                        <div id="lista-nomes-assistencia-fixa">
+                                            <div class="campo-nome-assistencia-fixa">
+                                                <input type="text" name="nomes-assistencia-fixa" placeholder="Nome completo" required>
                                             </div>
                                         </div>
                                     </div>
-                                    <button type="button" id="adicionar-pessoa-assistencia-fixa" class="admin-botao admin-botao-secundario" style="margin-top: 5px;">＋ Adicionar pessoa</button>
-                                    <button type="submit" class="admin-botao admin-botao-principal" style="margin-top: 10px;">Salvar presenças</button>
-                                    <p id="mensagem-assistencia-fixa" role="status" style="margin-top: 5px;"></p>
-                                </form>
-                            </div>
-                        </div>
-
-                        <!-- LISTAGEM CONJUNTA -->
-                        <div class="admin-cartao admin-cartao-lista" style="margin-top: 15px;">
-                            <div class="admin-lista-cabecalho">
-                                <h3>Registros por data</h3>
-                                <button type="button" id="atualizar-registros-assistencia" class="admin-botao admin-botao-secundario">↻ Atualizar lista</button>
-                            </div>
-                            <div id="lista-registros-assistencia" style="margin-top: 10px;"></div>
+                                </div>
+                                <button type="button" id="adicionar-pessoa-assistencia-fixa" class="admin-botao admin-botao-secundario" style="margin-top: 5px;">＋ Adicionar pessoa</button>
+                                <button type="submit" class="admin-botao admin-botao-principal" style="margin-top: 10px;">Salvar presenças</button>
+                                <p id="mensagem-assistencia-fixa" role="status" style="margin-top: 5px;"></p>
+                            </form>
                         </div>
                     </div>
-                </section>
 
-                <!-- 3. SECRETARIA: FICHA CADASTRAL E DE SAÚDE (PADRÃO RECOLHÍVEL) -->
-                <section class="secao-recolhivel" style="margin-bottom: 20px;">
-                    <button
-                        type="button"
-                        class="titulo-recolhivel"
-                        aria-expanded="false"
-                        aria-controls="conteudo-ficha-filho-secao">
-                        <span>
-                            <span class="subtitulo">SECRETARIA</span>
-                            <span class="texto-titulo">Preencher Ficha Cadastral e de Saúde</span>
-                        </span>
-                        <span class="sinal-recolher" aria-hidden="true">＋</span>
-                    </button>
-
-                    <div id="conteudo-ficha-filho-secao" class="conteudo-recolhivel" hidden>
-                        <p>Preencha os seus dados confidenciais para o registro interno da casa.</p>
-
-                        <form id="form-ficha-filho">
-                            <div class="admin-formulario">
-                                <div class="admin-campo admin-campo-completo">
-                                    <label for="ficha-nome">Nome completo *</label>
-                                    <input type="text" id="ficha-nome" name="nome_completo" required>
-                                </div>
-                                <div class="admin-campo">
-                                    <label for="ficha-email">E-mail</label>
-                                    <input type="email" id="ficha-email" name="email">
-                                </div>
-                                <div class="admin-campo">
-                                    <label for="ficha-telefone">Telefone / WhatsApp *</label>
-                                    <input type="tel" id="ficha-telefone" name="telefone" placeholder="(11) 99999-9999" required>
-                                </div>
-                                <div class="admin-campo">
-                                    <label for="ficha-rg">RG *</label>
-                                    <input type="text" id="ficha-rg" name="rg" required>
-                                </div>
-                                <div class="admin-campo">
-                                    <label for="ficha-cpf">CPF *</label>
-                                    <input type="text" id="ficha-cpf" name="cpf" required>
-                                </div>
-                                <div class="admin-campo">
-                                    <label for="ficha-nascimento">Data de nascimento *</label>
-                                    <input type="date" id="ficha-nascimento" name="data_nascimento" required>
-                                </div>
-                                <div class="admin-campo admin-campo-completo">
-                                    <label for="ficha-endereco">Endereço completo *</label>
-                                    <input type="text" id="ficha-endereco" name="endereco" placeholder="Rua, número, bairro, cidade" required>
-                                </div>
-                                <div class="admin-campo admin-campo-completo">
-                                    <label for="ficha-emergencia">Contato de emergência (Nome e Telefone) *</label>
-                                    <input type="text" id="ficha-emergencia" name="contato_emergencia" placeholder="Ex: Maria (Mãe) - (11) 99999-9999" required>
-                                </div>
-                                <div class="admin-campo">
-                                    <label for="ficha-tem-filhos">Tem filhos? *</label>
-                                    <select id="ficha-tem-filhos" name="tem_filhos" required>
-                                        <option value="">Selecione</option>
-                                        <option value="Sim">Sim</option>
-                                        <option value="Não">Não</option>
-                                    </select>
-                                </div>
-                                <div class="admin-campo">
-                                    <label for="ficha-qtd-filhos">Quantos filhos?</label>
-                                    <input type="text" id="ficha-qtd-filhos" name="quantidade_filhos" placeholder="Se não tiver, deixe em branco">
-                                </div>
-                                <div class="admin-campo">
-                                    <label for="ficha-alcool">Consumo de bebida alcoólica? *</label>
-                                    <select id="ficha-alcool" name="consome_alcool" required>
-                                        <option value="">Selecione</option>
-                                        <option value="Não">Não</option>
-                                        <option value="Socialmente">Socialmente</option>
-                                        <option value="Frequentemente">Frequentemente</option>
-                                    </select>
-                                </div>
-                                <div class="admin-campo">
-                                    <label for="ficha-cigarro">Consumo de cigarro / tabaco? *</label>
-                                    <select id="ficha-cigarro" name="consome_cigarro" required>
-                                        <option value="">Selecione</option>
-                                        <option value="Não">Não</option>
-                                        <option value="Sim">Sim</option>
-                                    </select>
-                                </div>
-                                <div class="admin-campo admin-campo-completo">
-                                    <label for="ficha-remedios">Faz uso de remédio controlado? Qual(is)?</label>
-                                    <input type="text" id="ficha-remedios" name="usa_remedio_controlado" placeholder="Descreva os medicamentos ou informe 'Nenhum'">
-                                </div>
-                                <div class="admin-campo admin-campo-completo">
-                                    <label for="ficha-alergias">Possui algum tipo de alergia?</label>
-                                    <input type="text" id="ficha-alergias" name="alergias" placeholder="Informe alergias a medicamentos, alimentos, etc., ou 'Nenhuma'">
-                                </div>
-                            </div>
-
-                            <button type="submit" class="admin-botao admin-botao-principal" style="margin-top: 15px;">
-                                Enviar minha ficha cadastral
-                            </button>
-
-                            <p id="mensagem-ficha-filho" role="status" aria-live="polite" style="margin-top: 10px; font-weight: bold;"></p>
-                        </form>
+                    <!-- LISTAGEM CONJUNTA -->
+                    <div class="admin-cartao-lista" style="margin-top: 20px;">
+                        <div class="admin-lista-cabecalho">
+                            <h3>Registros por data</h3>
+                            <button type="button" id="atualizar-registros-assistencia" class="admin-botao admin-botao-secundario">↻ Atualizar lista</button>
+                        </div>
+                        <div id="lista-registros-assistencia" style="margin-top: 10px;"></div>
                     </div>
-                </section>
+                </div>
 
-                <!-- 4. CONSULTA GERAL DAS FICHAS - PROTEGIDA POR SENHA (PADRÃO RECOLHÍVEL) -->
-                <section class="secao-recolhivel" style="margin-bottom: 20px;">
-                    <button
-                        type="button"
-                        class="titulo-recolhivel"
-                        aria-expanded="false"
-                        aria-controls="conteudo-consulta-fichas">
-                        <span>
-                            <span class="subtitulo">RESTRITO</span>
-                            <span class="texto-titulo">Secretaria: Consulta Geral das Fichas (Protegido por Senha)</span>
-                        </span>
-                        <span class="sinal-recolher" aria-hidden="true">＋</span>
-                    </button>
+                <!-- 3. SECRETARIA: FICHA CADASTRAL E DE SAÚDE -->
+                <div class="admin-cartao" style="margin-bottom: 20px;">
+                    <h3>Preencher Ficha Cadastral e de Saúde</h3>
+                    <p>Preencha os seus dados confidenciais para o registro interno da casa.</p>
 
-                    <div id="conteudo-consulta-fichas" class="conteudo-recolhivel" hidden>
-                        <p>Área restrita. Digite a senha administrativa exclusiva (`casadelei2026`) para visualizar todos os cadastros.</p>
-
-                        <div id="container-senha-fichas" style="margin-bottom: 15px; margin-top: 15px;">
-                            <label for="senha-admin-fichas">Senha de acesso exclusivo:</label>
-                            <input type="password" id="senha-admin-fichas" placeholder="Digite a senha" style="padding: 8px; margin-right: 10px;">
-                            <button type="button" id="botao-liberar-fichas" class="admin-botao admin-botao-principal">Liberar Fichas</button>
-                            <p id="mensagem-senha-fichas" role="status" style="margin-top: 8px; font-weight: bold;"></p>
+                    <form id="form-ficha-filho" style="margin-top: 15px;">
+                        <div class="admin-formulario">
+                            <div class="admin-campo admin-campo-completo">
+                                <label for="ficha-nome">Nome completo *</label>
+                                <input type="text" id="ficha-nome" name="nome_completo" required>
+                            </div>
+                            <div class="admin-campo">
+                                <label for="ficha-email">E-mail</label>
+                                <input type="email" id="ficha-email" name="email">
+                            </div>
+                            <div class="admin-campo">
+                                <label for="ficha-telefone">Telefone / WhatsApp *</label>
+                                <input type="tel" id="ficha-telefone" name="telefone" placeholder="(11) 99999-9999" required>
+                            </div>
+                            <div class="admin-campo">
+                                <label for="ficha-rg">RG *</label>
+                                <input type="text" id="ficha-rg" name="rg" required>
+                            </div>
+                            <div class="admin-campo">
+                                <label for="ficha-cpf">CPF *</label>
+                                <input type="text" id="ficha-cpf" name="cpf" required>
+                            </div>
+                            <div class="admin-campo">
+                                <label for="ficha-nascimento">Data de nascimento *</label>
+                                <input type="date" id="ficha-nascimento" name="data_nascimento" required>
+                            </div>
+                            <div class="admin-campo admin-campo-completo">
+                                <label for="ficha-endereco">Endereço completo *</label>
+                                <input type="text" id="ficha-endereco" name="endereco" placeholder="Rua, número, bairro, cidade" required>
+                            </div>
+                            <div class="admin-campo admin-campo-completo">
+                                <label for="ficha-emergencia">Contato de emergência (Nome e Telefone) *</label>
+                                <input type="text" id="ficha-emergencia" name="contato_emergencia" placeholder="Ex: Maria (Mãe) - (11) 99999-9999" required>
+                            </div>
+                            <div class="admin-campo">
+                                <label for="ficha-tem-filhos">Tem filhos? *</label>
+                                <select id="ficha-tem-filhos" name="tem_filhos" required>
+                                    <option value="">Selecione</option>
+                                    <option value="Sim">Sim</option>
+                                    <option value="Não">Não</option>
+                                </select>
+                            </div>
+                            <div class="admin-campo">
+                                <label for="ficha-qtd-filhos">Quantos filhos?</label>
+                                <input type="text" id="ficha-qtd-filhos" name="quantidade_filhos" placeholder="Se não tiver, deixe em branco">
+                            </div>
+                            <div class="admin-campo">
+                                <label for="ficha-alcool">Consumo de bebida alcoólica? *</label>
+                                <select id="ficha-alcool" name="consome_alcool" required>
+                                    <option value="">Selecione</option>
+                                    <option value="Não">Não</option>
+                                    <option value="Socialmente">Socialmente</option>
+                                    <option value="Frequentemente">Frequentemente</option>
+                                </select>
+                            </div>
+                            <div class="admin-campo">
+                                <label for="ficha-cigarro">Consumo de cigarro / tabaco? *</label>
+                                <select id="ficha-cigarro" name="consome_cigarro" required>
+                                    <option value="">Selecione</option>
+                                    <option value="Não">Não</option>
+                                    <option value="Sim">Sim</option>
+                                </select>
+                            </div>
+                            <div class="admin-campo admin-campo-completo">
+                                <label for="ficha-remedios">Faz uso de remédio controlado? Qual(is)?</label>
+                                <input type="text" id="ficha-remedios" name="usa_remedio_controlado" placeholder="Descreva os medicamentos ou informe 'Nenhum'">
+                            </div>
+                            <div class="admin-campo admin-campo-completo">
+                                <label for="ficha-alergias">Possui algum tipo de alergia?</label>
+                                <input type="text" id="ficha-alergias" name="alergias" placeholder="Informe alergias a medicamentos, alimentos, etc., ou 'Nenhuma'">
+                            </div>
                         </div>
 
-                        <!-- Lista de Fichas -->
-                        <div id="conteudo-fichas-restrito" hidden style="margin-top: 20px;">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                                <h5>Fichas Cadastradas</h5>
-                                <button type="button" id="atualizar-fichas-filhos" class="admin-botao">Atualizar Lista</button>
-                            </div>
-                            <div id="lista-fichas-filhos"></div>
-                        </div>
+                        <button type="submit" class="admin-botao admin-botao-principal" style="margin-top: 15px;">
+                            Enviar minha ficha cadastral
+                        </button>
+
+                        <p id="mensagem-ficha-filho" role="status" aria-live="polite" style="margin-top: 10px; font-weight: bold;"></p>
+                    </form>
+                </div>
+
+                <!-- 4. CONSULTA GERAL DAS FICHAS - PROTEGIDA POR SENHA -->
+                <div class="admin-cartao">
+                    <h3>Secretaria: Consulta Geral das Fichas (Protegido por Senha)</h3>
+                    <p>Área restrita. Digite a senha administrativa exclusiva (<code>casadelei2026</code>) para visualizar todos os cadastros.</p>
+
+                    <div id="container-senha-fichas" style="margin-bottom: 15px; margin-top: 15px;">
+                        <label for="senha-admin-fichas" style="display:block; margin-bottom:5px; font-weight:bold;">Senha de acesso exclusivo:</label>
+                        <input type="password" id="senha-admin-fichas" placeholder="Digite a senha" style="padding: 10px; margin-right: 10px; width: 220px; border:1px solid #ccc; border-radius:6px;">
+                        <button type="button" id="botao-liberar-fichas" class="admin-botao admin-botao-principal" style="margin-top:0;">Liberar Fichas</button>
+                        <p id="mensagem-senha-fichas" role="status" style="margin-top: 8px; font-weight: bold;"></p>
                     </div>
-                </section>
+
+                    <!-- Lista de Fichas -->
+                    <div id="conteudo-fichas-restrito" hidden style="margin-top: 20px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                            <h5>Fichas Cadastradas</h5>
+                            <button type="button" id="atualizar-fichas-filhos" class="admin-botao admin-botao-secundario">Atualizar Lista</button>
+                        </div>
+                        <div id="lista-fichas-filhos"></div>
+                    </div>
+                </div>
 
             </div>
         </div>
