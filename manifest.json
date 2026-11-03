@@ -1,1 +1,14 @@
 
+{
+  "id": "/site-casa-de-lei-site/",
+  "name": "Casa de Lei Mãe Iemanjá e Pai Benedito das Almas",
+  "short_name": "Casa de Lei",
+  "description": "Fé, caridade, amor e respeito à ancestralidade.",
+  "start_url": "/site-casa-de-lei-site/",
+  "scope": "/site-casa-de-lei-site/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f5f1e9",
+  "theme_color": "#f5f1e9",
+  "lang": "pt-BR"
+}
