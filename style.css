@@ -1839,3 +1839,48 @@ footer p + p {
     max-width: 100% !important;
     box-sizing: border-box;
 }
+
+
+/* =========================================================
+   AJUSTE: AMPLIAR A ÁREA DE MEMBROS QUANDO EXIBE O ADMIN
+   O login permanece estreito; somente a área administrativa
+   aproveita a largura disponível.
+========================================================= */
+
+@media (min-width: 701px) {
+    #area-membros:has(#painel-administrativo) {
+        width: calc(100% - 40px);
+        max-width: 1400px;
+        margin: 35px auto;
+        padding: 34px;
+        text-align: left;
+    }
+
+    #area-membros:has(#painel-administrativo) #painel-administrativo {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        margin: 0;
+    }
+
+    #area-membros:has(#painel-administrativo) #lista-registros-assistencia {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+@media (max-width: 700px) {
+    #area-membros:has(#painel-administrativo) {
+        width: calc(100% - 20px);
+        max-width: none;
+        padding: 18px 12px;
+        margin: 25px auto;
+    }
+
+    #area-membros:has(#painel-administrativo) #painel-administrativo {
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+        padding: 18px 12px;
+    }
+}
