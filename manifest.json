@@ -1,10 +1,10 @@
 {
-  "id": "/site-casa-de-lei-site/",
+  "id": "/",
   "name": "Casa de Lei Mãe Yemanjá e Pai Benedito das Almas",
   "short_name": "Casa de Lei",
   "description": "Fé, caridade, amor e respeito à ancestralidade.",
-  "start_url": "/site-casa-de-lei-site/",
-  "scope": "/site-casa-de-lei-site/",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#f5f1e9",
@@ -12,12 +12,12 @@
   "lang": "pt-BR",
   "icons": [
     {
-      "src": "/site-casa-de-lei-site/imagens/icon-192.png",
+      "src": "/imagens/icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/site-casa-de-lei-site/imagens/icon-512.png",
+      "src": "/imagens/icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
