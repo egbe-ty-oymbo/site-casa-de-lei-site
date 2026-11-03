@@ -195,6 +195,71 @@
                                         <label for="assistencia-endereco">Endereço</label>
                                         <input type="text" id="assistencia-endereco" name="endereco" placeholder="Rua, número, bairro e cidade">
                                     </div>
+
+                                    <!-- COMO CONHECEU A CASA -->
+                                    <div class="admin-campo admin-campo-completo">
+                                        <span class="admin-label">Como conheceu a Casa de Lei?</span>
+                                        <div class="admin-opcoes">
+                                            <label><input type="checkbox" name="assistencia-origem" value="Indicação de uma pessoa"> Indicação de uma pessoa</label>
+                                            <label><input type="checkbox" name="assistencia-origem" value="Google"> Google</label>
+                                            <label><input type="checkbox" name="assistencia-origem" value="Instagram"> Instagram</label>
+                                            <label><input type="checkbox" name="assistencia-origem" value="Facebook"> Facebook</label>
+                                            <label><input type="checkbox" name="assistencia-origem" value="Outros"> Outros</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="admin-campo admin-campo-completo">
+                                        <label for="detalhe-origem">Se marcou indicação ou outros, informe os detalhes</label>
+                                        <input type="text" id="detalhe-origem" name="detalhe-origem" placeholder="Nome da pessoa ou outra forma de conhecer a casa">
+                                    </div>
+
+                                    <!-- MOTIVOS DA VISITA -->
+                                    <div class="admin-campo admin-campo-completo">
+                                        <span class="admin-label">Qual o motivo da visita?</span>
+                                        <div class="admin-opcoes">
+                                            <label><input type="checkbox" name="assistencia-motivo" value="Saúde"> Saúde</label>
+                                            <label><input type="checkbox" name="assistencia-motivo" value="Amor"> Amor</label>
+                                            <label><input type="checkbox" name="assistencia-motivo" value="Financeiro"> Financeiro</label>
+                                            <label><input type="checkbox" name="assistencia-motivo" value="Emprego"> Emprego</label>
+                                            <label><input type="checkbox" name="assistencia-motivo" value="Pessoal"> Pessoal</label>
+                                            <label><input type="checkbox" name="assistencia-motivo" value="Curiosidade"> Curiosidade</label>
+                                            <label><input type="checkbox" name="assistencia-motivo" value="Espiritualidade"> Espiritualidade</label>
+                                            <label><input type="checkbox" name="assistencia-motivo" value="Outro"> Outro</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="admin-campo admin-campo-completo">
+                                        <label for="motivo-outro">Se marcou outro, qual?</label>
+                                        <input type="text" id="motivo-outro" name="motivo-outro" placeholder="Descreva o outro motivo">
+                                    </div>
+
+                                    <!-- FREQUÊNCIA EM OUTRO TERREIRO -->
+                                    <div class="admin-campo">
+                                        <label for="frequenta-terreiro">Frequenta outro terreiro? *</label>
+                                        <select id="frequenta-terreiro" name="frequenta-terreiro" required>
+                                            <option value="">Selecione</option>
+                                            <option value="Sim">Sim</option>
+                                            <option value="Não">Não</option>
+                                            <option value="Já frequentei">Já frequentei</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- INTERESSE NO GRUPO -->
+                                    <div class="admin-campo">
+                                        <label for="deseja-grupo">Deseja participar do grupo de assistência? *</label>
+                                        <select id="deseja-grupo" name="deseja-grupo" required>
+                                            <option value="">Selecione</option>
+                                            <option value="Sim">Sim</option>
+                                            <option value="Não">Não</option>
+                                            <option value="Gostaria de saber mais">Gostaria de saber mais</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- OBSERVAÇÕES -->
+                                    <div class="admin-campo admin-campo-completo">
+                                        <label for="observacoes">Observações</label>
+                                        <textarea id="observacoes" name="observacoes" placeholder="Anotações importantes sobre a recepção"></textarea>
+                                    </div>
                                 </div>
                                 <button type="submit" class="admin-botao admin-botao-principal" style="margin-top: 10px;">Salvar registro</button>
                                 <p id="mensagem-registro-assistencia" role="status" style="margin-top: 5px;"></p>
