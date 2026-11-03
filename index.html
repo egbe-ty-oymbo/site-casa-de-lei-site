@@ -1194,5 +1194,14 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase.js"></script>
 <script src="script.js"></script>
+    <script>
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/site-casa-de-lei-site/service-worker.js")
+        .then(() => console.log("Aplicativo Casa de Lei configurado!"))
+        .catch((error) => console.error("Erro ao configurar aplicativo:", error));
+    });
+  }
+</script>
 </body>
 </html>
