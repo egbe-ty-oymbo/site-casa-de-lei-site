@@ -1,3 +1,9 @@
+
+
+
+
+
+
 /* AGENDAMENTO DE JOGO DE BÚZIOS E PIX */
 
 const formularioJogo = document.querySelector(".agenda-formulario");
@@ -937,34 +943,60 @@ if (botaoSairAdministracao) {
             observacoes: valorCampo("observacoes")
         };
 
-        if (!dados.data_assistencia || !dados.gira || !dados.responsavel_recepcao || !dados.nome_completo || !dados.frequenta_terreiro || !dados.deseja_grupo) {
+        if (
+            !dados.data_assistencia ||
+            !dados.gira ||
+            !dados.responsavel_recepcao ||
+            !dados.nome_completo ||
+            !dados.frequenta_terreiro ||
+            !dados.deseja_grupo_assistencia
+        ) {
             mensagemPrimeiraVez.textContent = "Preencha todos os campos obrigatórios (*).";
             return;
         }
 
         mensagemPrimeiraVez.textContent = "Salvando registro...";
 
-        let resultado;
-        if (registroEmEdicao) {
-            resultado = await supabaseClient
-                .from("registros_assistencia")
-                .update(dados)
-                .eq("id", registroEmEdicao);
-        } else {
-            resultado = await supabaseClient
-                .from("registros_assistencia")
-                .insert([dados]);
+        const botaoSalvar = formPrimeiraVez.querySelector('button[type="submit"]');
+        if (botaoSalvar) {
+            botaoSalvar.disabled = true;
+            botaoSalvar.textContent = "Salvando...";
         }
 
-        if (resultado.error) {
-            mensagemPrimeiraVez.textContent = "Erro ao salvar: " + resultado.error.message;
-            console.error(resultado.error);
-            return;
-        }
+        try {
+            let resultado;
 
-        mensagemPrimeiraVez.textContent = "Registro salvo com sucesso!";
-        limparEdicaoPrimeiraVez();
-        await carregarRegistrosAssistencia();
+            if (registroEmEdicao !== null) {
+                resultado = await supabaseClient
+                    .from("registros_assistencia")
+                    .update(dados)
+                    .eq("id", registroEmEdicao);
+            } else {
+                resultado = await supabaseClient
+                    .from("registros_assistencia")
+                    .insert([dados]);
+            }
+
+            if (resultado.error) {
+                mensagemPrimeiraVez.textContent = "Erro ao salvar: " + resultado.error.message;
+                console.error("Erro ao salvar cadastro de assistência:", resultado.error);
+                return;
+            }
+
+            mensagemPrimeiraVez.textContent = "Registro salvo com sucesso!";
+            limparEdicaoPrimeiraVez();
+            await carregarRegistrosAssistencia();
+        } catch (erro) {
+            console.error("Erro inesperado ao salvar cadastro de assistência:", erro);
+            mensagemPrimeiraVez.textContent =
+                "Ocorreu um erro inesperado ao salvar. Tente novamente.";
+        } finally {
+            if (botaoSalvar) {
+                botaoSalvar.disabled = false;
+                botaoSalvar.textContent =
+                    registroEmEdicao !== null ? "Salvar alterações" : "Salvar registro";
+            }
+        }
     });
 
     if (botaoAbrirPrimeiraVez && formularioPrimeiraVez) {
@@ -1248,3 +1280,7 @@ document.addEventListener("DOMContentLoaded", function () {
         iniciarMenusAdmin();
     }
 })();
+
+
+
+
