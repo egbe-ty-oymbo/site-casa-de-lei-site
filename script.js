@@ -4,6 +4,9 @@
 
 
 
+
+
+
 /* AGENDAMENTO DE JOGO DE BÚZIOS E PIX */
 
 const formularioJogo = document.querySelector(".agenda-formulario");
@@ -686,8 +689,9 @@ if (botaoSairAdministracao) {
     }
 
     function valorCampo(nome) {
-        const campo = formPrimeiraVez.elements[nome];
-        return campo ? campo.value.trim() : "";
+        const campo = Array.from(formPrimeiraVez.elements)
+            .find(elemento => elemento.name === nome);
+        return campo ? String(campo.value || "").trim() : "";
     }
 
     function valoresMarcados(nome) {
@@ -943,8 +947,22 @@ if (botaoSairAdministracao) {
             observacoes: valorCampo("observacoes")
         };
 
-        if (!dados.data_assistencia || !dados.gira || !dados.responsavel_recepcao || !dados.nome_completo || !dados.frequenta_terreiro || !dados.deseja_grupo_assistencia) {
-            mensagemPrimeiraVez.textContent = "Preencha todos os campos obrigatórios (*).";
+        const camposObrigatorios = [
+            ["data_assistencia", "Data da gira"],
+            ["gira", "Gira frequentada"],
+            ["responsavel_recepcao", "Responsável pela recepção"],
+            ["nome_completo", "Nome completo"],
+            ["frequenta_terreiro", "Frequenta outro terreiro"],
+            ["deseja_grupo_assistencia", "Participação no grupo"]
+        ];
+
+        const camposVazios = camposObrigatorios
+            .filter(([campo]) => !dados[campo])
+            .map(([, nome]) => nome);
+
+        if (camposVazios.length > 0) {
+            mensagemPrimeiraVez.textContent =
+                "Confira os seguintes campos: " + camposVazios.join(", ");
             return;
         }
 
